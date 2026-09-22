@@ -1,0 +1,93 @@
+body{
+    background-color: #2B364A;
+    margin: 0%;
+}
+.hor{
+    display: flex;
+    flex-direction: row;
+    
+}
+a:hover {
+    color: #5A93FA !important;
+}
+
+footer{
+    background-color: #020B1A;
+}
+.mainFooter{
+    margin-left: 240px;
+    margin-right: 240px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-content: center;
+}
+.seccion{
+    display: flex;
+    flex-direction: column;
+    color: #AAB0BB;
+    margin-left: 70px;
+}
+div.seccion h2{
+    color: #AAB0BB;
+    font-family: "Lohit Bengali", sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: lighter;
+}
+div.seccion a{
+    color: #878F9D;
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.minilogo{
+    width: 30px;
+    height: 30px;
+}
+.marca{
+    width: 150px;
+    height: 25px;
+}
+.redes{
+    margin-top: 6px;
+    margin-bottom: 16px;
+}
+
+header{
+    background-color: #020B1A;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.mainHeader{
+    align-items: center;
+}
+.logoPrincipal{
+    margin-left: 50px;
+    width: 295px;
+    height: 50px;
+}
+.cajabuscar {
+     display: flex;
+     align-items: center;
+     float: none;
+     width: 100%;
+     max-width: 453px;
+     margin-left: auto;
+     margin-right: auto;
+     text-align: left;
+     align-items: center;
+ }
+ div.cajabuscar input{
+    background-color: #4E5C72;
+    color: rgb(255, 255, 255);
+    height: stretch;
+    width: stretch;
+ }
+  div.cajabuscar input::placeholder{
+    color: rgb(255, 255, 255);
+ }
