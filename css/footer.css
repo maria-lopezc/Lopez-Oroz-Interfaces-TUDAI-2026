@@ -1,0 +1,11 @@
+html, body { margin: 0; background: #020b1a; color: white; font-family: Inter, sans-serif; }
+.pie { display: flex; justify-content: center; gap: 40px; padding: 10px;
+	border-radius: 10px 10px 0 0; background: #020b1a; }
+.columna-pie { display: flex; flex-direction: column; gap: 10px; padding: 10px; }
+.pie h2 { font-size: 20px; font-weight: normal; color: #aab0bb; }
+.columna-pie a { color: #878f9d; font: 14px/32px Inter, sans-serif; text-decoration: none; transition: .25s; }
+.columna-pie a:hover { color: white; }
+.iconos-redes { display: flex; gap: 10px; }
+.iconos-redes svg { width: 30px; height: 30px; fill: #aab0bb; }
+.icono-detalle { fill: #020b1a; }
+.logo-pie { display: block; width: 180px; max-width: 100%; height: auto; }

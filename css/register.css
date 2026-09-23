@@ -1,0 +1,92 @@
+/* =====================================================
+   SparkGames · Registro  (CSS puro, sin librerías)
+   ===================================================== */
+
+/* ---------- 1. COLORES (cambiá el diseño desde acá) ---------- */
+:root {
+  --fondo-pagina: #2b364a;   /* azul de fondo */
+  --fondo-oscuro: #020b1a;   /* tarjeta y pie de página */
+  --gris-claro:   #aab0bb;   /* cajas de texto y títulos */
+  --gris-medio:   #878f9d;   /* links del pie */
+  --gris-oscuro:  #4e5c72;   /* texto de ayuda dentro de las cajas */
+  --azul:         #367bf9;   /* botón principal */
+  --rojo:         #ff6b6b;   /* errores */
+}
+
+/* ---------- 2. BASE ---------- */
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--fondo-pagina); color: white; font-family: Inter, sans-serif; }
+a { color: inherit; text-decoration: none; }
+.pagina { display: flex; flex-direction: column; gap: 20px; min-height: 100vh; padding: 20px 10px 0; }
+
+/* ---------- 3. ANIMACIONES ---------- */
+@keyframes aparecer { from { opacity: 0; transform: translateY(15px); } }            /* entra desde abajo */
+@keyframes temblar  { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+/* ---------- 4. TARJETA Y LOGO ---------- */
+.tarjeta { display: flex; flex-direction: column; align-items: center; gap: 10px;
+           padding: 40px 10px; border-radius: 10px; background: var(--fondo-oscuro);
+           animation: aparecer .6s; }
+.logo { display: block; width: min(320px, 80vw); }
+.logo-imagen { display: block; width: 100%; height: auto; }
+.titulo { font-size: 22px; font-weight: normal; }
+.footer-iframe { display: block; width: 100%; height: 315px; margin-top: auto; border: 0;
+                 border-radius: 10px 10px 0 0; background: var(--fondo-oscuro); overflow: hidden; }
+
+/* ---------- 5. FORMULARIO ---------- */
+.formulario { position: relative; width: 538px; padding: 10px; }
+.campos { display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 20px; }
+.fila { display: flex; gap: 10px; }                 /* dos campos lado a lado */
+.campo { flex: 1; }
+
+.campo label { display: block; line-height: 32px; font-weight: 500; color: var(--gris-claro); }
+.campo input { width: 100%; height: 32px; padding: 0 10px; border: 0; border-radius: 12px;
+               background: var(--gris-claro); color: black; outline: 2px solid transparent; transition: .25s; }
+.campo input::placeholder { color: var(--gris-oscuro); }
+.campo input:focus { background: white; outline-color: var(--azul); }       /* mientras se escribe */
+
+/* Errores: el JS agrega "formulario-validado" al apretar el botón */
+.mensaje-error { display: none; margin-top: 4px; font-size: 12px; color: var(--rojo); }
+.formulario-validado input:invalid { outline-color: var(--rojo); animation: temblar .4s; }
+.formulario-validado input:invalid + .mensaje-error { display: block; }
+
+/* ---------- 6. CASILLAS (términos y captcha) ---------- */
+.casilla, .captcha { position: relative; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.casilla input, .captcha input { position: absolute; opacity: 0; }
+
+.casilla-cuadro { display: grid; place-items: center; width: 20px; height: 20px;
+                  border: 1px solid currentColor; font-size: 14px; color: white; transition: .25s; }
+.casilla-cuadro::after { content: "✔"; transform: scale(0); transition: .25s; }            /* tilde escondido */
+input:checked + .casilla-cuadro { background: var(--azul); border-color: var(--azul); }
+input:checked + .casilla-cuadro::after { transform: scale(1); }                            /* aparece el tilde */
+.formulario-validado input:invalid + .casilla-cuadro { border-color: var(--rojo); }
+
+/* Captcha de muestra: recuadro blanco con una casilla claramente visible */
+.captcha { width: 243px; max-width: 100%; height: 60px; margin: 22px auto 6px; padding: 0 12px;
+           border: 1px solid #d6d6d6; border-radius: 3px; background: white; color: #222;
+           box-shadow: 0 1px 3px rgb(0 0 0 / 20%); user-select: none; }
+.captcha .casilla-cuadro { flex: 0 0 28px; width: 28px; height: 28px; border: 2px solid #555;
+                            background: white; color: #222; }
+.captcha input { width: 28px; height: 28px; cursor: pointer; }
+.captcha input:focus-visible + .casilla-cuadro { outline: 2px solid var(--azul); outline-offset: 2px; }
+
+/* ---------- 7. BOTONES ---------- */
+.acciones { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 10px; }
+.texto-acciones { font-size: 18px; line-height: 32px; }
+
+.boton-registrarse { height: 70px; margin: 12px 0 8px; padding: 0 64px; border: 0; border-radius: 20px;
+                     background: var(--azul); color: white; font-size: 30px; cursor: pointer; transition: .25s; }
+.boton-registrarse:hover { transform: translateY(-3px); }                    /* se eleva */
+
+.botones-sociales { display: flex; gap: 14px; width: 320px; max-width: 100%; padding: 14px 0 4px; }
+.boton-social { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+                min-height: 52px; padding: 6px 12px; border-radius: 10px; background: var(--gris-claro); color: black; transition: .25s; }
+.boton-social:hover { background: white; }
+.boton-social b { display: grid; place-items: center; width: 42px; height: 42px; font-size: 28px; }
+.icono-google   { color: #4285f4; }
+.icono-facebook { background: var(--azul); color: white; border-radius: 8px; }
+
+.link-login { margin-left: 6px; }
+.link-login:hover { text-decoration: none;  color: var(--azul); }
+
+
