@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registrarse · SparkGames</title>
+  <!-- Fuentes de Google (Inter y Jersey 25). Se pueden quitar: el CSS tiene fuentes de respaldo -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Jersey+25&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/register.css">
+</head>
+<body>
+<div class="pagina">
+
+  <!-- ========== TARJETA CON EL FORMULARIO ========== -->
+  <main class="tarjeta">
+
+    <a class="logo" href="../home.html">
+      <img class="logo-imagen" src="../img/Logo completo.png" alt="SparkGames">
+    </a>
+
+    <h1 class="titulo">Registrarse</h1>
+
+    <!-- novalidate: los errores los mostramos nosotros con CSS, no el navegador -->
+    <form class="formulario" id="registro" novalidate>
+
+      <div class="campos">
+        <!-- Cada campo = etiqueta + input + mensaje de error (oculto hasta que falla) -->
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" placeholder="Nombre" required minlength="2">
+          <span class="mensaje-error">Ingresá tu nombre.</span>
+        </div>
+
+        <div class="campo">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" name="apellido" placeholder="Apellido" required minlength="2">
+          <span class="mensaje-error">Ingresá tu apellido.</span>
+        </div>
+
+        <!-- Fecha y nickname en la misma fila -->
+        <div class="fila">
+          <div class="campo">
+            <label for="fecha">Fecha de Nacimiento</label>
+            <input id="fecha" name="fecha" placeholder="DD/MM/AAAA" maxlength="10" required>
+            <span class="mensaje-error">Fecha inválida.</span>
+          </div>
+          <div class="campo">
+            <label for="nickname">Nickname</label>
+            <input id="nickname" name="nickname" placeholder="Nickname" required minlength="3">
+            <span class="mensaje-error">Mínimo 3 caracteres.</span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Email" required>
+          <span class="mensaje-error">Ingresá un email válido.</span>
+        </div>
+
+        <div class="campo">
+          <label for="contrasenia">Contraseña</label>
+          <input id="contrasenia" name="contrasenia" type="password" placeholder="Contraseña" required minlength="8">
+          <span class="mensaje-error">Mínimo 8 caracteres.</span>
+        </div>
+
+        <div class="campo">
+          <label for="contrasenia-repetida">Repetir Contraseña</label>
+          <input id="contrasenia-repetida" name="contrasenia-repetida" type="password" placeholder="Contraseña" required>
+          <span class="mensaje-error">Las contraseñas no coinciden.</span>
+        </div>
+
+        <!-- Casilla propia: el input real se oculta y .casilla-cuadro dibuja el cuadrado -->
+        <label class="casilla">
+          <input type="checkbox" name="terminos" required>
+          <span class="casilla-cuadro"></span>
+          Acepto los Términos y Condiciones
+        </label>
+
+        <!-- Captcha de muestra hecho en CSS (para uso real, reemplazar por reCAPTCHA) -->
+        <label class="captcha">
+          <input type="checkbox" name="captcha" required>
+          <span class="casilla-cuadro"></span>
+          No soy un robot
+        </label>
+      </div>
+
+      <div class="acciones">
+        <button class="boton-registrarse" type="submit">Registrarse</button>
+
+        <p class="texto-acciones">¿Tenés un perfil? <a class="link-login" href="#">Iniciar sesión</a></p>
+
+        <p class="texto-acciones">O acceder con</p>
+        <div class="botones-sociales">
+          <a class="boton-social" href="#"><b class="icono-google">G</b>Google</a>
+          <a class="boton-social" href="#"><b class="icono-facebook">f</b>Facebook</a>
+        </div>
+
+      </div>
+
+    </form>
+  </main>
+
+  <iframe class="footer-iframe" src="footer.html" title="Footer de SparkGames" scrolling="no"></iframe>
+</div>
+<script src="../js/register.js"></script>
+</body>
+</html>
