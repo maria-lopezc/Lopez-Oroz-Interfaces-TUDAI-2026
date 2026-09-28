@@ -1,0 +1,182 @@
+@property --pct {
+    syntax: "<integer>";
+    inherits: true;
+    initial-value: 0;
+}
+.loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: #2B364A;
+    color: #AAB0BB;
+      /* 1) cuenta 5s  2) al terminar, se desvanece y queda oculto */
+    animation:
+        loader-count 5s linear forwards,
+        loader-hide 0.5s ease 5s forwards;
+}
+.loader__circle {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    display: grid;
+    place-items: center;
+}
+.loader__circle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 5px solid #4E5C72;
+    border-top-color: #367BF9;
+    animation: loader-spin 1s linear infinite;
+}
+.loader__logo {
+    width: 48px;
+    height: auto;
+    animation: loader-pulse 1.2s ease-in-out infinite;
+}
+.loader__percent {
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: sans-serif;
+    counter-reset: pct var(--pct);
+}
+.loader__percent::after { 
+    content: counter(pct) "%";
+}
+.loader__bar {
+    width: min(280px, 70vw);
+    height: 8px;
+    border-radius: 999px;
+    background: #4E5C72;
+    overflow: hidden;
+}
+.loader__bar-fill {
+    width: 0;
+    height: 100%;
+    background: #367BF9;
+    animation: loader-fill 5s linear forwards;
+}
+
+    /* Tramos (total 5s):
+       0–1.5s    0% → 50%
+       1.5–3s   50% → 75%
+       3–3.2s   quieto en 75%
+       3.2–4.2s 75% → 95%
+       4.2–4.5s quieto en 95%
+       4.5–5s   95% → 100%
+       Barra y número usan los mismos porcentajes para ir sincronizados. */
+@keyframes loader-count {
+    0%   { --pct: 0; }
+    30%  { --pct: 50; }
+    60%  { --pct: 75; }
+    64%  { --pct: 75; }
+    84%  { --pct: 95; }
+    90%  { --pct: 95; }
+    100% { --pct: 100; }
+}
+@keyframes loader-fill {
+    0%   { width: 0; }
+    30%  { width: 50%; }
+    60%  { width: 75%; }
+    64%  { width: 75%; }
+    84%  { width: 95%; }
+    90%  { width: 95%; }
+    100% { width: 100%; }
+}
+@keyframes loader-hide  {
+    to { opacity: 0; visibility: hidden; } 
+}
+@keyframes loader-spin  { 
+    0% { transform: rotate(0); } 100% { transform: rotate(360deg); } 
+}
+@keyframes loader-pulse {
+    0%   { transform: scale(1);    opacity: 1; }
+    50%  { transform: scale(0.94); opacity: 0.6; }
+    100% { transform: scale(1);    opacity: 1; }
+}
+
+.bodyHome{
+    margin-left: 6%;
+    margin-right: 6%;
+    color: white;
+    font-family: "Inter", sans-serif;
+}
+
+.midlogo{
+    width: 4%;
+    height: auto;
+}
+
+.cardPrin{
+    width: 85%;
+    height: auto;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+.carruselMain{
+    align-items: center;
+    justify-content: center;
+    margin-top: 1%;
+}
+
+.destacado{
+    padding: 1%;
+}
+
+.etiqueta{
+    display: table;
+    color: white;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    border-radius: 0.3rem;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.etiquetaMain{
+    font-size: 1.5rem;
+    padding: 0.3%;
+}
+
+.etiquetaMain, .etiqueta2da{
+    background-color: #CA2699;
+}
+
+.etiqueta2da, .etiqueta3ra{
+    font-size: 1.25rem;
+    padding: 0.15%;
+}
+
+.etiqueta3ra{
+    background-color: #367BF9;
+}
+
+.carrusel{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.carrusel > * {
+    flex-shrink: 0;
+    width: 25%;
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    display: block;
+    border-radius: 12px;
+}
+.btn-scroll{
+    background-color: transparent;
+    border: none;
+}
