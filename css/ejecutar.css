@@ -19,6 +19,9 @@ img {
     max-width: 100%;
 }
 
+.compartir { 
+    position: relative; 
+}
 .btn-compartir {
     width: 40px; 
     height: 40px; 
@@ -29,7 +32,7 @@ img {
     place-items: center;
     color: #aab0bb;
     transition: color .3s ease;
-  }
+}
 .btn-compartir svg { 
     width: 34px; 
     height: 34px; 
@@ -55,6 +58,29 @@ img {
     0%, 100% { transform: scale(1); }
     40%      { transform: scale(1.45); }
     70%      { transform: scale(.9); }
+}
+
+.panel {
+    position: absolute; 
+    top: 48px; 
+    left: 0; 
+    width: 240px;
+    padding: 14px; 
+    border-radius: 8px; 
+    background: #1b2a43;
+    opacity: 0; 
+    transform: translateY(-8px) scale(.96);
+    pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+}
+.panel.abierto { 
+    opacity: 1; 
+    transform: none; 
+    pointer-events: auto; 
+}
+.panel p { 
+    margin: 0 0 12px; 
+    font-size: 16px; 
 }
 
 div.bodyHome h1{

@@ -19,45 +19,34 @@ a:hover {
     color: #5A93FA;
 }
 
-.marca{
-    width: 100%;
-    height: auto;
-}
-
 header{
     background-color: #020B1A;
     padding-left: 2.5%;
     padding-right: 2.5%;
     padding-top: 0.3%;
     padding-bottom: 0.3%;
+    position: relative;
 }
-
 .icon{
-    width: 2%;
+    width: 100%;
     height: auto;
 }
-
 .mainHeader{
     align-items: center;
 }
-
 .logoPrincipal{
     margin-left: 3%;
     width: 20%;
     height: auto;
 }
-
 .cajabuscar {
     display: flex;
     align-items: center;
-    float: none;
     width: 100%;
     max-width: 30%;
     margin-left: auto;
     margin-right: auto;
-    text-align: left;
 }
-
 .btn-buscar {
     width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
     background: #053ea5;
@@ -84,14 +73,64 @@ header{
 .btn-buscar:active { 
     transform: translateY(0) scale(.95); 
 }
-
 div.cajabuscar input{
     background-color: #4E5C72;
     color: rgb(255, 255, 255);
+    border: none; 
+    padding: 0 0.6rem; 
+    height: 40px; 
+    flex: 1; 
 }
-
 div.cajabuscar input::placeholder{
     color: rgb(255, 255, 255);
+}
+
+.menu-toggle-checkbox { 
+    display: none; 
+}
+.menu-toggle-label { 
+    display: block;
+    cursor: pointer; 
+}  
+.sideMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 208px;
+    background: #14233B;
+    padding: 0.6rem 0;
+    z-index: 90;
+  }
+.menu-toggle-checkbox:checked ~ .sideMenu {
+    display: block; 
+}
+.sideMenu__grupo {
+    list-style: none;
+    margin: 0; 
+    padding: 0; 
+}
+.sideMenu__grupo a {
+    display: flex;
+    align-items: center; 
+    gap: 0.6rem;
+    padding: 0.5rem 1.25rem; 
+    color: #AAB0BB; 
+    font-size: 0.9rem;
+  }
+.sideMenu__grupo a:hover {
+    background: #1B2A43;
+    color: #fff; 
+}
+.sideMenu__ico {
+    width: 20px; 
+    height: 20px; 
+    flex-shrink: 0; 
+}
+.sideMenu__divisor {
+    border: none; 
+    border-top: 1px solid #4E5C72; 
+    margin: 0.5rem 1.25rem; 
 }
 
 .bodyHome{
