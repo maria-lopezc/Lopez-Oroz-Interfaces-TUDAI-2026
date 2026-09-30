@@ -74,24 +74,22 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
 .acciones { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 10px; }
 .texto-acciones { font-size: 18px; line-height: 32px; }
 
-.boton-registrarse { min-height: 56px; margin: 12px 0 8px; padding: 10px 24px; border: 0; border-radius: 20px;
+.boton-principal { min-height: 56px; margin: 12px 0 8px; padding: 10px 24px; border: 0; border-radius: 20px;
                      background: var(--azul); color: white; font-size: 24px; cursor: pointer; transition: .25s; }
-.boton-registrarse:hover { transform: translateY(-3px); }                    /* se eleva */
+.boton-principal:hover { transform: translateY(-3px); }                    /* se eleva */
 
 .botones-sociales { display: flex; gap: 14px; width: 320px; max-width: 100%; padding: 14px 0 4px; }
 .boton-social { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
                 min-height: 52px; padding: 6px 12px; border-radius: 10px; background: var(--gris-claro); color: black; transition: .25s; }
-.boton-social:hover { background: white; }
-.boton-social b { display: grid; place-items: center; width: 42px; height: 42px; font-size: 28px; }
-.icono-google   { color: #4285f4; }
-.icono-facebook { background: var(--azul); color: white; border-radius: 8px; }
+.boton-social:hover { background: var(--gris-medio); }          /* hover del Figma */
+.boton-social img { width: 42px; height: 42px; }
 
 .link-login { margin-left: 6px; }
 .link-login:hover { text-decoration: none;  color: var(--azul); }
 
 @media (min-width: 600px) {
   .fila { flex-direction: row; }
-  .boton-registrarse { min-height: 70px; padding: 0 64px; font-size: 30px; }
+  .boton-principal { min-height: 70px; padding: 0 64px; font-size: 30px; }
 }
 
 @media (min-width: 1200px) {

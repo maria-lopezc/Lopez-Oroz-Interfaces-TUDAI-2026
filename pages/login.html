@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · SparkGames</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Jersey+25&display=swap" rel="stylesheet">
+  <!-- Usa los mismos estilos que el registro (tarjeta, inputs, botones) -->
+  <link rel="stylesheet" href="../css/register.css">
+</head>
+<body>
+<div class="pagina">
+
+  <!-- ========== TARJETA CON EL FORMULARIO ========== -->
+  <main class="tarjeta">
+
+    <a class="logo" href="home.html">
+      <img class="logo-imagen" src="../img/Logo completo.png" alt="SparkGames">
+    </a>
+
+    <h1 class="titulo">Iniciar sesión</h1>
+
+    <!-- novalidate: los errores los mostramos nosotros con CSS, no el navegador -->
+    <form class="formulario" id="login" novalidate>
+
+      <div class="campos">
+        <div class="campo">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Email" required>
+          <span class="mensaje-error">Ingresá un email válido.</span>
+        </div>
+
+        <div class="campo">
+          <label for="contrasenia">Contraseña</label>
+          <input id="contrasenia" name="contrasenia" type="password" placeholder="Contraseña" required minlength="8">
+          <span class="mensaje-error">Mínimo 8 caracteres.</span>
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button class="boton-principal" type="submit">Iniciar sesión</button>
+
+        <p class="texto-acciones">O acceder con</p>
+        <div class="botones-sociales">
+          <a class="boton-social" href="#"><img src="../img/icons/google.svg" alt="">Google</a>
+          <a class="boton-social" href="#"><img src="../img/icons/facebook_social.svg" alt="">Facebook</a>
+        </div>
+
+        <p class="texto-acciones">¿No tenés un perfil? <a class="link-login" href="register.html">Registrate</a></p>
+      </div>
+
+    </form>
+  </main>
+
+  <iframe class="footer-iframe" src="footer.html" title="Footer de SparkGames" scrolling="no"></iframe>
+</div>
+<script src="../js/login.js"></script>
+</body>
+</html>
