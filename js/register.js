@@ -21,4 +21,4 @@ formulario.addEventListener('submit', (evento) => {
   if (formulario.checkValidity()) {
     window.location.href = '../home.html';
   }
-});
+})
