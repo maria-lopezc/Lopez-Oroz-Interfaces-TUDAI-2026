@@ -266,13 +266,24 @@
 /* Todas las imágenes en fila; JS la mueve con translateX */
 .carrusel-principal__pista{
     display: flex;
-    transition: transform .5s ease;
+    transition: transform .6s cubic-bezier(.22, 1, .36, 1);
 }
 
 .card--destacado{
     flex: 0 0 100%;
     aspect-ratio: 1538 / 867;
     border-radius: 0;
+    /* Estado "inactivo": chico, apagado y desenfocado */
+    opacity: .3;
+    filter: blur(4px) brightness(.7);
+    transition: opacity .5s ease, filter .5s ease, transform .5s ease;
+    transform: skewX(-10deg);
+}
+
+.card--destacado.card--activa{
+    opacity: 1;
+    filter: none;
+    transform: skewX(0);
 }
 
 .indicadores{
@@ -340,6 +351,11 @@
     scroll-snap-align: start;
 }
 
+.carrusel-principal__flecha,
+.fila__flecha {
+    display: none;
+}
+
 /* ===== TABLET ===== */
 @media (min-width: 600px) {
     .bodyHome {
@@ -358,6 +374,12 @@
     .carrusel-principal__flecha:hover {
         position: static;
         transform: none;
+    }
+    .carrusel-principal__flecha {
+        display: grid;
+    }
+    .fila__flecha:not(.flecha--oculta) {
+        display: grid;
     }
 
     .carrusel-principal__flecha:hover {

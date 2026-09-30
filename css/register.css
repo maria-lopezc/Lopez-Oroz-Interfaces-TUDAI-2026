@@ -74,8 +74,31 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
 .acciones { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 10px; }
 .texto-acciones { font-size: 18px; line-height: 32px; text-align: center; }
 
-.boton-principal { min-height: 56px; margin: 12px 0 8px; padding: 10px 24px; border: 0; border-radius: 20px;
-                     background: var(--azul); color: white; font-size: 24px; cursor: pointer; transition: .25s; }
+.boton-principal { 
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 56px; 
+  margin: 12px 0 8px; 
+  padding: 10px 24px; 
+  border: 0; 
+  border-radius: 20px;      
+  background: var(--azul); 
+  color: white; 
+  font-size: 24px; 
+  cursor: pointer; 
+  transition: .25s; }
+
+  .boton-principal::before{
+    content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #1d9a04;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .6s ease-out;
+  }
 .boton-principal:hover { transform: translateY(-3px); }                    /* se eleva */
 
 .botones-sociales { display: flex; flex-wrap: wrap; gap: 14px; width: 320px; max-width: 100%; padding: 14px 0 4px; }
@@ -86,6 +109,12 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
 
 .link-login { margin-left: 6px; }
 .link-login:hover { text-decoration: none;  color: var(--azul); }
+
+.boton-principal.valido::before { transform: scaleX(1); }
+.boton-principal.valido {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(29, 154, 4, .55);
+}
 
 @media (min-width: 600px) {
   .fila { flex-direction: row; }

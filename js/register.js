@@ -1,11 +1,5 @@
-/* =====================================================
-   SparkGames · Registro
-   Este JS NO anima nada (eso es CSS). Solo:
-   1) revisa que las contraseñas coincidan
-  2) muestra los errores
-   ===================================================== */
-
 const formulario       = document.getElementById('registro');
+const btn=document.getElementById('btn-registrar')
 const contrasenia      = document.getElementById('contrasenia');
 const contraseniaRepetida = document.getElementById('contrasenia-repetida');
 
@@ -19,6 +13,11 @@ formulario.addEventListener('submit', (evento) => {
   formulario.classList.add('formulario-validado');  // el CSS muestra los errores en rojo
 
   if (formulario.checkValidity()) {
-    window.location.href = 'home.html';
+    btn.classList.add('valido');
+    btn.textContent = '✓ ¡Registrado!';
+    btn.disabled = true;
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 2000);
   }
 })
