@@ -111,28 +111,7 @@
     100% { transform: scale(1);    opacity: 1; }
 }
 
-.midlogo{
-    flex: 0 0 36px;
-    width: 36px;
-    height: auto;
-}
-
-.cardPrin{
-    width: calc(100% - 104px);
-    max-width: 1000px;
-    height: auto;
-    margin: 0 8px;
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(2, 11, 26, .35);
-}
-
-.carruselMain{
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-}
-
+/* ===== ETIQUETAS DE CADA SECCIÓN ===== */
 .destacado{
     padding: 4px 0 12px;
 }
@@ -165,86 +144,231 @@
     background-color: #367BF9;
 }
 
-.carrusel{
-    overflow-x: auto;
-    overflow-y: hidden;
+/* ===== FLECHAS (botón redondo del Figma "boton_carrusel") ===== */
+.flecha{
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    border-radius: 24px;
+    background-color: #14233B;
+    cursor: pointer;
+    transition: background-color .3s, transform .3s;
+}
+
+.flecha:hover{
+    background-color: #367BF9;
+    transform: scale(1.1);
+}
+
+.flecha:active{
+    transform: scale(.95);
+}
+
+/* La flecha que no se puede usar (inicio o final del carrusel) se oculta */
+.flecha--oculta{
+    display: none;
+}
+
+/* ===== CARD DE JUEGO (imagen + hover) ===== */
+.card{
     position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #1B2A43;
+}
+
+.card img{
+    display: block;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hover del Figma: capa oscura al 75% con el ícono en el centro.
+   El ícono arranca chico y crece mientras aparece la capa. */
+.card::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 11, 26, .75) url("../img/icons/play.svg") center / 20% auto no-repeat;
+    opacity: 0;
+    transition: opacity .3s ease, background-size .3s ease;
+}
+
+.card:hover::after,
+.card:focus-visible::after{
+    opacity: 1;
+    background-size: 38% auto;
+}
+
+/* Los juegos pagos muestran el carrito en vez del play */
+.card--compra::after{
+    background-image: url("../img/icons/carrito_hover.svg");
+}
+
+/* En el juego principal el play es más chico en proporción */
+.card--destacado:hover::after,
+.card--destacado:focus-visible::after{
+    background-size: 22% auto;
+}
+
+/* ===== PRECIO (solo en Top en ventas) ===== */
+.precio{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    height: 41px;
+    display: grid;
+    place-items: center;
+    border-radius: 5px;
+    background-color: #5A93FA;
+    color: #03296E;
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* ===== CARRUSEL PRINCIPAL ===== */
+.carrusel-principal{
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 2px 2px 12px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 2px;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: #4E5C72 transparent;
+    gap: 24px;
 }
 
-.carrusel > * {
-    flex-shrink: 0;
-    width: 82%;
-    height: auto;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    overflow: hidden;
-    display: block;
-    border-radius: 10px;
-    background: #1B2A43;
-    box-shadow: 0 4px 14px rgba(2, 11, 26, .3);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-}
-.btn-scroll{
-    flex: 0 0 40px;
-    min-height: 44px;
-    background-color: transparent;
-    border: none;
-}
-.btn-scroll img {
-    display: block;
-    width: 32px;
-    height: 32px;
+/* En celular las flechas van arriba de la imagen */
+.carrusel-principal__flecha{
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
 }
 
-.bodyHome > .hor:not(.carrusel) .carrusel {
-    min-width: 0;
+.carrusel-principal__flecha:hover{
+    transform: translateY(-50%) scale(1.1);
+}
+
+#principalAnterior{ left: 8px; }
+#principalSiguiente{ right: 8px; }
+
+.carrusel-principal__ventana{
     flex: 1;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
+/* Todas las imágenes en fila; JS la mueve con translateX */
+.carrusel-principal__pista{
+    display: flex;
+    transition: transform .5s ease;
+}
+
+.card--destacado{
+    flex: 0 0 100%;
+    aspect-ratio: 1538 / 867;
+    border-radius: 0;
+}
+
+.indicadores{
+    display: flex;
+    justify-content: center;
+    gap: 11px;
+    padding: 14px;
+}
+
+.indicador{
+    width: 11px;
+    height: 11px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #14233B;
+    cursor: pointer;
+    transition: background-color .3s, transform .3s;
+}
+
+.indicador:hover{
+    transform: scale(1.3);
+}
+
+.indicador--activo{
+    background-color: #367BF9;
+}
+
+/* ===== CARRUSELES CHICOS ===== */
+.fila{
+    position: relative;
+}
+
+/* Flechas encima de las cards, centradas en vertical */
+.fila__flecha{
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+}
+
+.fila__flecha:hover{
+    transform: translateY(-50%) scale(1.1);
+}
+
+.fila__flecha--izq{ left: 8px; }
+.fila__flecha--der{ right: 8px; }
+
+.carrusel{
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;         /* se navega con las flechas o deslizando */
+}
+
+.carrusel::-webkit-scrollbar{
+    display: none;
+}
+
+.carrusel .card{
+    flex: 0 0 82%;                 /* celular: se ve una card y un poco de la siguiente */
+    aspect-ratio: 16 / 9;
+    scroll-snap-align: start;
+}
+
+/* ===== TABLET ===== */
 @media (min-width: 600px) {
     .bodyHome {
         padding: 24px;
     }
 
-    .carrusel > * {
-        width: 42%;
+    .carrusel .card {
+        flex-basis: 42%;
     }
 }
 
+/* ===== ESCRITORIO ===== */
 @media (min-width: 1024px) {
-    .midlogo {
-        flex-basis: 48px;
-        width: 48px;
+    /* Las flechas del carrusel principal pasan al costado, como en el Figma */
+    .carrusel-principal__flecha,
+    .carrusel-principal__flecha:hover {
+        position: static;
+        transform: none;
     }
 
-    .cardPrin {
-        width: calc(100% - 128px);
+    .carrusel-principal__flecha:hover {
+        transform: scale(1.1);
     }
 
-    .carrusel > * {
-        width: 25%;
-    }
-}
-
-@media (hover: hover) {
-    .carrusel > * {
-        transition: transform .18s ease, box-shadow .18s ease;
+    .carrusel {
+        gap: 20px;
     }
 
-    .carrusel > *:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(2, 11, 26, .42);
+    .carrusel .card {
+        flex-basis: calc((100% - 60px) / 3.5);   /* 3 cards y media, como en el Figma */
     }
 }

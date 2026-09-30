@@ -22,66 +22,97 @@
     <script src="../js/navbar-iframe.js"></script>
 
     <div class="bodyHome">
+        <!-- ========== CARRUSEL PRINCIPAL ========== -->
         <div class="destacado">
             <p class="etiqueta etiquetaMain">Destacados</p>
-            <div class="hor carruselMain">
-                <img class="midlogo" src="../img/boton_carrusel_izq.png" alt="">
-                <img class="cardPrin" src="../img/peg_solitaire.png" alt="">
-                <img class="midlogo" src="../img/boton_carrusel_der.png" alt="">
+            <div class="carrusel-principal">
+                <button class="flecha carrusel-principal__flecha" id="principalAnterior" type="button" aria-label="Anterior">
+                    <img src="../img/icons/flecha_izq.svg" alt="">
+                </button>
+                <div class="carrusel-principal__ventana">
+                    <div class="carrusel-principal__pista">
+                        <a class="card card--destacado" href="ejecutar.html"><img src="../img/peg_solitaire.png" alt="Peg Solitaire Los Simpsons"></a>
+                        <a class="card card--destacado" href="#"><img src="../img/domino.png" alt="Dominó"></a>
+                        <a class="card card--destacado" href="#"><img src="../img/bejeweled.png" alt="Bejeweled"></a>
+                    </div>
+                </div>
+                <button class="flecha carrusel-principal__flecha" id="principalSiguiente" type="button" aria-label="Siguiente">
+                    <img src="../img/icons/flecha_der.svg" alt="">
+                </button>
             </div>
-            <a href="ejecutar.html">Ejecutar sera cambiado el link</a>
+            <div class="indicadores">
+                <button class="indicador indicador--activo" type="button" aria-label="Juego 1"></button>
+                <button class="indicador" type="button" aria-label="Juego 2"></button>
+                <button class="indicador" type="button" aria-label="Juego 3"></button>
+            </div>
         </div>
+
+        <!-- ========== CARRUSELES CHICOS ========== -->
         <p class="etiqueta etiqueta2da">Top en Ventas</p>
-        <div class="hor">
+        <div class="fila">
+            <button class="flecha fila__flecha fila__flecha--izq" type="button" aria-label="Anterior"><img src="../img/icons/flecha_izq.svg" alt=""></button>
             <div class="carrusel">
-                <img src="../img/img_r1.png" alt="">
-                <img src="../img/img_r2.png" alt="">
-                <img src="../img/img_r3.png" alt="">
-                <img src="../img/img_r4.png" alt="">
-                <img src="../img/img_r5.png" alt="">
-                <img src="../img/img_r6.png" alt="">
-                <img src="../img/img_r7.png" alt="">
+                <a class="card card--compra" href="#"><img src="../img/img_r1.png" alt=""><span class="precio">$1.99</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r2.png" alt=""><span class="precio">$0.99</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r3.png" alt=""><span class="precio">$1.49</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r4.png" alt=""><span class="precio">$2.99</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r5.png" alt=""><span class="precio">$0.49</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r6.png" alt=""><span class="precio">$1.99</span></a>
+                <a class="card card--compra" href="#"><img src="../img/img_r7.png" alt=""><span class="precio">$4.99</span></a>
             </div>
-            <button class="btn-scroll" type="button">
-                <img src="../img/boton_carrusel_der.png" alt="boton">
-            </button>
+            <button class="flecha fila__flecha fila__flecha--der" type="button" aria-label="Siguiente"><img src="../img/icons/flecha_der.svg" alt=""></button>
         </div>
-        
+
         <p class="etiqueta etiqueta3ra">Top gratis</p>
-        <div class="hor carrusel">
-            <img src="../img/img_m1.png" alt="">
-            <img src="../img/img_m2.png" alt="">
-            <img src="../img/img_m4.png" alt="">
-            <img src="../img/img_m5.png" alt="">
-            <img src="../img/img_m6.png" alt="">
-            <img src="../img/img_m7.png" alt="">
-            <img src="../img/img_m8.png" alt="">
+        <div class="fila">
+            <button class="flecha fila__flecha fila__flecha--izq" type="button" aria-label="Anterior"><img src="../img/icons/flecha_izq.svg" alt=""></button>
+            <div class="carrusel">
+                <a class="card" href="#"><img src="../img/img_m1.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m2.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m4.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m5.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m6.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m7.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_m8.png" alt=""></a>
+            </div>
+            <button class="flecha fila__flecha fila__flecha--der" type="button" aria-label="Siguiente"><img src="../img/icons/flecha_der.svg" alt=""></button>
         </div>
         <img class="fillScreen" src="../img/publi_5.png" alt="">
+
         <p class="etiqueta etiqueta3ra">Jugados recientemente</p>
-        <div class="hor carrusel">
-            <img src="../img/img_accion1.png" alt="">
-            <img src="../img/img_accion2.png" alt=""> 
-            <img src="../img/img_accion3.png" alt=""> 
-            <img src="../img/img_accion4.png" alt=""> 
-            <img src="../img/img_accion5.png" alt=""> 
-            <img src="../img/img_accion6.png" alt=""> 
-            <img src="../img/img_accion7.png" alt=""> 
+        <div class="fila">
+            <button class="flecha fila__flecha fila__flecha--izq" type="button" aria-label="Anterior"><img src="../img/icons/flecha_izq.svg" alt=""></button>
+            <div class="carrusel">
+                <a class="card" href="#"><img src="../img/img_accion1.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion2.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion3.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion4.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion5.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion6.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_accion7.png" alt=""></a>
+            </div>
+            <button class="flecha fila__flecha fila__flecha--der" type="button" aria-label="Siguiente"><img src="../img/icons/flecha_der.svg" alt=""></button>
         </div>
         <img class="fillScreen" src="../img/publi_4.png" alt="">
+
         <p class="etiqueta etiqueta3ra">Clasicos</p>
-        <div class="hor carrusel">
-            <img src="../img/img_c1.png" alt="">
-            <img src="../img/img_c2.png" alt="">
-            <img src="../img/img_c3.png" alt="">
-            <img src="../img/img_c4.png" alt="">
-            <img src="../img/img_c5.png" alt="">
-            <img src="../img/img_c6.png" alt="">
-            <img src="../img/img_c7.png" alt="">
+        <div class="fila">
+            <button class="flecha fila__flecha fila__flecha--izq" type="button" aria-label="Anterior"><img src="../img/icons/flecha_izq.svg" alt=""></button>
+            <div class="carrusel">
+                <a class="card" href="#"><img src="../img/img_c1.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c2.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c3.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c4.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c5.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c6.png" alt=""></a>
+                <a class="card" href="#"><img src="../img/img_c7.png" alt=""></a>
+            </div>
+            <button class="flecha fila__flecha fila__flecha--der" type="button" aria-label="Siguiente"><img src="../img/icons/flecha_der.svg" alt=""></button>
         </div>
         <img class="fillScreen" src="../img/publi_2.png" alt="">
     </div>
     <iframe class="footer-iframe" src="footer.html" title="Footer de SparkGames" scrolling="no"></iframe>
     <script src="../js/ph.js"></script>
+    <script src="../js/home.js"></script>
 </body>
 </html>
