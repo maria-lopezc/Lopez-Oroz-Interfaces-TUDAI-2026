@@ -112,39 +112,45 @@
 }
 
 .midlogo{
-    width: 4%;
+    flex: 0 0 36px;
+    width: 36px;
     height: auto;
 }
 
 .cardPrin{
-    width: 85%;
+    width: calc(100% - 104px);
+    max-width: 1000px;
     height: auto;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
+    margin: 0 8px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(2, 11, 26, .35);
 }
 
 .carruselMain{
     align-items: center;
     justify-content: center;
-    margin-top: 1%;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .destacado{
-    padding: 1%;
+    padding: 4px 0 12px;
 }
 
 .etiqueta{
     display: table;
     color: white;
     font-family: 'Arial Narrow Bold', sans-serif;
-    border-radius: 0.3rem;
-    margin-bottom: 1%;
-    margin-top: 1%;
+    border-radius: 4px;
+    margin: 24px 0 12px;
+    padding: 7px 10px;
+    line-height: 1.2;
 }
 
 .etiquetaMain{
-    font-size: 1.5rem;
-    padding: 0.3%;
+    font-size: 1.25rem;
+    padding: 8px 12px;
+    margin-top: 0;
 }
 
 .etiquetaMain, .etiqueta2da{
@@ -152,8 +158,7 @@
 }
 
 .etiqueta2da, .etiqueta3ra{
-    font-size: 1.25rem;
-    padding: 0.15%;
+    font-size: 1.125rem;
 }
 
 .etiqueta3ra{
@@ -161,25 +166,85 @@
 }
 
 .carrusel{
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     position: relative;
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 12px;
+    padding: 2px 2px 12px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 2px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #4E5C72 transparent;
 }
 
 .carrusel > * {
     flex-shrink: 0;
-    width: 25%;
+    width: 82%;
     height: auto;
     max-width: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     overflow: hidden;
     display: block;
-    border-radius: 12px;
+    border-radius: 10px;
+    background: #1B2A43;
+    box-shadow: 0 4px 14px rgba(2, 11, 26, .3);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 .btn-scroll{
+    flex: 0 0 40px;
+    min-height: 44px;
     background-color: transparent;
     border: none;
+}
+.btn-scroll img {
+    display: block;
+    width: 32px;
+    height: 32px;
+}
+
+.bodyHome > .hor:not(.carrusel) .carrusel {
+    min-width: 0;
+    flex: 1;
+}
+
+@media (min-width: 600px) {
+    .bodyHome {
+        padding: 24px;
+    }
+
+    .carrusel > * {
+        width: 42%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .midlogo {
+        flex-basis: 48px;
+        width: 48px;
+    }
+
+    .cardPrin {
+        width: calc(100% - 128px);
+    }
+
+    .carrusel > * {
+        width: 25%;
+    }
+}
+
+@media (hover: hover) {
+    .carrusel > * {
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .carrusel > *:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(2, 11, 26, .42);
+    }
 }

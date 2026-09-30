@@ -54,7 +54,7 @@ img {
     position: absolute; 
     top: 48px; 
     left: 0; 
-    width: 240px;
+    width: min(240px, calc(100vw - 32px));
     padding: 14px; 
     border-radius: 8px; 
     background: #1b2a43;
@@ -81,10 +81,14 @@ div.bodyHome h1{
 
 .secInfo{
     background-color: #4E5C72;
-    margin: 0.2%;
-    padding: 0.5%;
+    margin: 0;
+    padding: 12px;
     height: auto;
-    width: 49%;
+    width: 100%;
+}
+.infoJuego {
+    flex-direction: column;
+    gap: 12px;
 }
 div.infoJuego h2{
     margin: 0%;
@@ -95,23 +99,31 @@ div.infoJuego ul, div.infoJuego p, div.infoJuego img{
 }
 
 .banner{
-    height: stretch;
-    width: auto;
-    margin-left: auto;
+    display: block;
+    width: min(100%, 400px);
+    height: auto;
+    margin: 0 auto;
 }
 
 .comentarios{
-    width: 70%;
-    margin-top: 1%;
+    width: 100%;
+    min-width: 0;
+    margin-top: 12px;
+}
+.comentarios-layout {
+    flex-direction: column;
+    gap: 16px;
 }
 div.comentarios form input::placeholder{
     color: #4E5C72;
 }
 div.comentarios form input{
-    margin-left: 1%;
+    flex: 1;
+    min-width: 0;
+    margin-left: 8px;
     background-color: #AAB0BB;
-    height: stretch;
-    width: stretch;
+    min-height: 40px;
+    width: 100%;
 }
 
 .btn-enviar {
@@ -145,15 +157,56 @@ div.comentarios form input{
 }
 
 div.comentario img{
-    width: 5%;
-    height: 5%;
-    margin-right: 1%;
-    margin-top: 2%;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 8px;
+    margin-top: 8px;
 }
 .respuesta{
-    margin-left: 5%;
+    margin-left: clamp(12px, 5%, 40px);
 }
 .comentario p{
-    margin-bottom: 5%;
-    margin-top: 8%;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+
+.infoJuego .hor {
+    flex-wrap: wrap;
+}
+
+.infoJuego .hor img {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    .infoJuego {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .secInfo {
+        flex: 1 1 0;
+        width: 50%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .comentarios-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .comentarios {
+        flex: 1;
+        width: auto;
+    }
+
+    .banner {
+        flex: 0 0 240px;
+        width: 240px;
+        margin: 12px 0 0 auto;
+    }
 }
