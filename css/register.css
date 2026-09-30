@@ -30,8 +30,6 @@ a { color: inherit; text-decoration: none; }
 .logo { display: block; width: min(320px, 80vw); }
 .logo-imagen { display: block; width: 100%; height: auto; }
 .titulo { font-size: 22px; font-weight: normal; }
-.footer-iframe { display: block; width: 100%; height: 700px; margin-top: auto; border: 0;
-                 border-radius: 10px 10px 0 0; background: var(--fondo-oscuro); overflow: hidden; }
 
 /* ---------- 5. FORMULARIO ---------- */
 .formulario { position: relative; width: min(100%, 538px); padding: 10px; }
@@ -115,18 +113,3 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(29, 154, 4, .55);
 }
-
-@media (min-width: 600px) {
-  .fila { flex-direction: row; }
-  .boton-principal { min-height: 70px; padding: 0 64px; font-size: 30px; }
-}
-
-@media (min-width: 768px) {
-  .footer-iframe { height: 580px; }   /* footer en 3 columnas */
-}
-
-@media (min-width: 1200px) {
-  .footer-iframe { height: 315px; }
-}
-
-

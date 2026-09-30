@@ -5,6 +5,7 @@
    ===================================================== */
 
 const formulario = document.getElementById('login');
+const btn=document.getElementById('btn-login');
 
 formulario.addEventListener('submit', (evento) => {
   evento.preventDefault();                          // evita que se recargue la página
@@ -12,6 +13,11 @@ formulario.addEventListener('submit', (evento) => {
   formulario.classList.add('formulario-validado');  // el CSS muestra los errores en rojo
 
   if (formulario.checkValidity()) {
-    window.location.href = 'home.html';
+    btn.classList.add('valido');
+    btn.textContent = '¡Ya casi! ✓';
+    btn.disabled = true;
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 2000);
   }
 });

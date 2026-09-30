@@ -189,6 +189,37 @@
     object-fit: cover;
 }
 
+.card__titulo{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;                    /* por encima de la capa oscura (::after) */
+    padding: 10px 12px;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: center;            /* centrado, alineado con el play */
+
+    /* títulos largos: máximo 2 líneas y "…" */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    /* misma transición que la capa oscura: aparecen juntos */
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.card:hover .card__titulo,
+.card:focus-visible .card__titulo{
+    opacity: 1;
+}
+
 /* Hover del Figma: capa oscura al 75% con el ícono en el centro.
    El ícono arranca chico y crece mientras aparece la capa. */
 .card::after{
@@ -357,7 +388,7 @@
 }
 
 /* ===== TABLET ===== */
-@media (min-width: 600px) {
+@media (min-width: 768px) {
     .bodyHome {
         padding: 24px;
     }

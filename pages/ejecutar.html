@@ -1,17 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peg Solitaire Los Simpsons · SparkGames</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/ejecutar.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Jersey+25&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="navbar-contenedor">
-      <iframe class="navbar-iframe" src="navbar.html" title="Barra de navegación" scrolling="no"></iframe>
-    </div>
-    <script src="../js/navbar-iframe.js"></script>
+    <header class="navbar">
+        <input type="checkbox" id="menu-check" class="navbar__check">
+
+        <div class="navbar__izquierda">
+            <label for="menu-check" class="navbar__boton-menu" aria-label="Abrir menú">
+            <img src="../img/icons/menu_hamburguesa.svg" alt="">
+            </label>
+            <a href="home.html">
+            <img class="navbar__logo" src="../img/Logo completo.png" alt="SparkGames">
+            </a>
+        </div>
+
+        <form class="buscador" role="search">
+            <input class="buscador__input" type="text" placeholder="Buscar">
+            <button class="buscador__boton" type="submit" aria-label="Buscar">
+            <img src="../img/icons/lupa.svg" alt="">
+            </button>
+        </form>
+
+        <div class="navbar__iconos">
+            <a href="login.html"><img class="navbar__icono" src="../img/perfil_1.png" alt="Iniciar sesión"></a>
+            <img class="navbar__icono" src="../img/icons/carrito_header.svg" alt="Carrito">
+            <img class="navbar__icono navbar__icono--escritorio" src="../img/icons/notificaciones.svg" alt="Notificaciones">
+            <img class="navbar__icono navbar__icono--escritorio" src="../img/icons/ajustes.svg" alt="Ajustes">
+        </div>
+
+        <!-- ========== MENÚ HAMBURGUESA ========== -->
+        <nav class="menu-lateral">
+            <ul class="menu-lateral__lista">
+            <li><a class="menu-lateral__item" href="home.html"><img class="menu-lateral__icono" src="../img/icons/icono_home.svg" alt="">Inicio</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/shopping_cart.svg" alt="">Carrito</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/icono_top.svg" alt="">Top en ventas</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/nuevo_icon.svg" alt="">Nuevos</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/update_icon.svg" alt="">Actualizados</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/premio_icon.svg" alt="">Premiados</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/multiplayer_icon.svg" alt="">Multijugador</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/leaderboard_icon.svg" alt="">Tablas de clasificación</a></li>
+            </ul>
+
+            <hr class="menu-lateral__divisor">
+
+            <ul class="menu-lateral__lista">
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/accion_icon.svg" alt="">Accion</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/arcade_icon.svg" alt="">Arcade</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/icono_aventura.svg" alt="">Aventuras</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/icono_click.svg" alt="">Click</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/conducir_icon.svg" alt="">Conducir</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/deportes_icon.svg" alt="">Deportes</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/target.svg" alt="">Disparos</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/cartas_icon.svg" alt="">Cartas</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/io_icon.svg" alt="">.io</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/mesa_icon.svg" alt="">Mesa</a></li>
+            <li><a class="menu-lateral__item" href="#"><img class="menu-lateral__icono" src="../img/icons/puzzle_icon.svg" alt="">Puzzle</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <div class="bodyHome">
         <div class="hor">
@@ -100,7 +155,25 @@
             <img class="banner" src="../img/publi_6.png" alt="">
         </div>
     </div>
-    <iframe class="footer-iframe" src="footer.html" title="Footer de SparkGames" scrolling="no"></iframe>
+
+    <footer class="pie">
+        <nav class="columna-pie"><h2>Nosotros</h2><a href="#">¿Quiénes somos?</a><a href="#">Otros proyectos</a><a href="#">Trabaja en SparkGames</a><a href="#">Atención al cliente</a><a href="#">Nuestra Newsletter</a></nav>
+        <nav class="columna-pie"><h2>Empresas</h2><a href="#">Contacto para empresas</a><a href="#">Publicitá con nosotros</a><a href="#">Programa de creadores</a><a href="#">Inversiones</a><a href="#">Prensa</a></nav>
+        <nav class="columna-pie"><h2>Legales</h2><a href="#">Términos y condiciones</a><a href="#">Términos de privacidad</a><a href="#">Términos de compra</a><a href="#">Política de cookies</a><a href="#">Aviso Legal</a></nav>
+        <nav class="columna-pie"><h2>Comunidad</h2><a href="#">Preguntas frecuentes (FAQ)</a><a href="#">Centro de ayuda</a><a href="#">Reportar un problema</a><a href="#">Sugerencias</a><a href="#">Foro de usuarios</a></nav>
+
+        <div class="columna-pie">
+        <h2>Social</h2>
+        <div class="iconos-redes">
+            <a href="#"><svg viewBox="0 0 30 30"><rect x="2" y="6" width="26" height="18" rx="6"/><path class="icono-detalle" d="M12 11l7 4-7 4z"/></svg></a>
+            <a href="#"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="13"/><path class="icono-detalle" d="M10 9c-1 3 2 9 8 11l2-2-3-2-1 1c-2-1-3-2-4-4l1-1-2-3z"/></svg></a>
+            <a href="#"><svg viewBox="0 0 30 30"><rect x="2" y="2" width="26" height="26" rx="6"/><path class="icono-detalle" d="M16 27V17h3l1-4h-4v-2c0-1 .5-2 2-2h2V5h-3c-3 0-5 2-5 5v3h-3v4h3v10z"/></svg></a>
+            <a href="#"><svg viewBox="0 0 30 30"><path d="M4 3h23v15l-6 6h-5l-4 4v-4H4z"/><path class="icono-detalle" d="M14 9h2v6h-2zm6 0h2v6h-2z"/></svg></a>
+        </div>
+        <img class="logo-pie" src="../img/Logo completo.png" alt="SparkGames">
+        </div>
+    </footer>
+
     <script src="../js/ejecutar.js"></script>
 </body>
 </html>

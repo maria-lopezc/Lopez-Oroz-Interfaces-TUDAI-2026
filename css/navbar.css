@@ -2,14 +2,9 @@
    Medidas y colores tomados del Figma (componentes "Header" y "Menu") */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
-
-/* Página navbar.html (se muestra dentro de un iframe) */
-.navbar-pagina {
-    margin: 0;
-}
-
 /* ---------- Barra ---------- */
 .navbar {
+    z-index: 100;
     position: relative;
     display: flex;
     flex-wrap: wrap;               /* en celular el buscador baja a otra fila */
@@ -217,8 +212,7 @@
     border-top: 1px solid #4E5C72;
 }
 
-/* ---------- Tablet (600px o más) ---------- */
-@media (min-width: 600px) {
+@media (min-width: 786px) {
     .navbar {
         padding: 12px 40px;
     }

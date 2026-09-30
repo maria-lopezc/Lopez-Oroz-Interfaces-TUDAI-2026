@@ -1,5 +1,5 @@
 const formulario       = document.getElementById('registro');
-const btn=document.getElementById('btn-registrar')
+const btn=document.getElementById('btn-registrar');
 const contrasenia      = document.getElementById('contrasenia');
 const contraseniaRepetida = document.getElementById('contrasenia-repetida');
 
@@ -14,7 +14,7 @@ formulario.addEventListener('submit', (evento) => {
 
   if (formulario.checkValidity()) {
     btn.classList.add('valido');
-    btn.textContent = '✓ ¡Registrado!';
+    btn.textContent = '¡Registrado! ✓';
     btn.disabled = true;
     setTimeout(() => {
         window.location.href = 'home.html';
