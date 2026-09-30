@@ -1,0 +1,252 @@
+/* ===== BARRA DE NAVEGACIÓN (mobile first) =====
+   Medidas y colores tomados del Figma (componentes "Header" y "Menu") */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+
+/* Página navbar.html (se muestra dentro de un iframe) */
+.navbar-pagina {
+    margin: 0;
+}
+
+/* ---------- Barra ---------- */
+.navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;               /* en celular el buscador baja a otra fila */
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: #020B1A;
+    font-family: "Inter", sans-serif;
+}
+
+.navbar__izquierda {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar__boton-menu {
+    display: block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.navbar__logo {
+    display: block;
+    height: 26px;
+    width: auto;
+}
+
+/* ---------- Buscador ---------- */
+.buscador {
+    order: 3;                      /* en celular va abajo, ocupando todo el ancho */
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    border-radius: 5px;
+    transition: box-shadow .3s;
+}
+
+.buscador__input {
+    flex: 1;
+    min-width: 0;
+    padding: 0 0 0 30px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background-color: #4E5C72;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
+
+.buscador__input::placeholder {
+    color: white;
+}
+
+.buscador__boton {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #053EA5;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.buscador__boton img {
+    transition: transform .35s;
+}
+
+/* Hover: al pasar por cualquier parte del buscador (o escribir en él)
+   se ilumina toda la barra, incluida la lupa */
+.buscador:hover,
+.buscador:focus-within {
+    box-shadow: 0 0 14px rgba(54, 123, 249, .6);
+}
+
+.buscador:hover .buscador__boton,
+.buscador:focus-within .buscador__boton {
+    background-color: #367BF9;
+}
+
+.buscador:hover .buscador__boton img,
+.buscador:focus-within .buscador__boton img {
+    transform: scale(1.2) rotate(-12deg);
+}
+
+.buscador__input:focus {
+    outline: none;                 /* el brillo de la barra ya marca el foco */
+}
+
+.buscador__boton:active img {
+    transform: scale(.95);
+}
+
+/* ---------- Íconos de la derecha ---------- */
+.navbar__iconos {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar__icono {
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: none;              /* cada ícono mantiene su tamaño del Figma */
+    cursor: pointer;
+}
+
+/* Notificaciones y ajustes no entran en pantallas chicas */
+.navbar__icono--escritorio {
+    display: none;
+}
+
+/* ---------- Menú hamburguesa ---------- */
+.navbar__check {
+    display: none;
+}
+
+.menu-lateral {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 90;
+    width: 280px;
+    max-width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px 16px;
+    box-sizing: border-box;
+    background-color: #14233B;
+}
+
+/* Si el checkbox está tildado, se muestra el menú */
+.navbar__check:checked ~ .menu-lateral {
+    display: block;
+}
+
+/* Barra de scroll del menú: fina, redondeada y con los colores del diseño */
+.menu-lateral::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-lateral::-webkit-scrollbar-track {
+    margin: 24px 0;                /* no llega hasta los bordes del menú */
+    background-color: transparent;
+}
+
+.menu-lateral::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #4E5C72;
+}
+
+.menu-lateral::-webkit-scrollbar-thumb:hover {
+    background-color: #5A93FA;
+}
+
+/* Firefox no entiende ::-webkit-scrollbar, usa estas propiedades */
+@supports not selector(::-webkit-scrollbar) {
+    .menu-lateral {
+        scrollbar-width: thin;
+        scrollbar-color: #4E5C72 transparent;
+    }
+}
+
+.menu-lateral__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-lateral__item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 10px 10px 15px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.menu-lateral__item:hover {
+    background-color: #1B2A43;
+    color: #5A93FA;
+}
+
+.menu-lateral__icono {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.menu-lateral__divisor {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #4E5C72;
+}
+
+/* ---------- Tablet (600px o más) ---------- */
+@media (min-width: 600px) {
+    .navbar {
+        padding: 12px 40px;
+    }
+
+    .navbar__izquierda {
+        gap: 50px;
+    }
+
+    .navbar__logo {
+        height: 50px;
+    }
+
+    .navbar__icono--escritorio {
+        display: block;
+    }
+}
+
+/* ---------- Escritorio (1024px o más): todo en una fila, igual al Figma ---------- */
+@media (min-width: 1024px) {
+    .navbar {
+        flex-wrap: nowrap;
+        height: 80px;
+        padding: 0 40px;
+    }
+
+    .buscador {
+        order: 0;
+        width: 620px;
+        flex-shrink: 1;
+    }
+}

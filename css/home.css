@@ -111,13 +111,6 @@
     100% { transform: scale(1);    opacity: 1; }
 }
 
-.bodyHome{
-    margin-left: 6%;
-    margin-right: 6%;
-    color: white;
-    font-family: "Inter", sans-serif;
-}
-
 .midlogo{
     width: 4%;
     height: auto;

@@ -19,125 +19,42 @@ a:hover {
     color: #5A93FA;
 }
 
-header{
-    background-color: #020B1A;
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-    padding-top: 0.3%;
-    padding-bottom: 0.3%;
-    position: relative;
-}
-.icon{
-    width: 100%;
-    height: auto;
-}
-.mainHeader{
-    align-items: center;
-}
-.logoPrincipal{
-    margin-left: 3%;
-    width: 20%;
-    height: auto;
-}
-.cajabuscar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 30%;
-    margin-left: auto;
-    margin-right: auto;
-}
-.btn-buscar {
-    width: 40px; height: 40px; padding: 0; border: 0; cursor: pointer;
-    background: #053ea5;
-    display: grid; 
-    place-items: center;
-    transition: background-color .3s ease-in, transform .3s ease-in,
-                box-shadow .3s ease-in;
-}
-.btn-buscar svg {
-    width: 25px; height: 25px;
-    transition: transform .35s ease-in;
-}
-.btn-buscar:hover {
-    background: #367bf9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(54, 123, 249, .45);
-    transition: background-color .3s ease-out, transform .3s ease-out,
-                box-shadow .3s ease-out;
-}
-.btn-buscar:hover svg {
-    transform: scale(1.2) rotate(-12deg);
-    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1); 
-}
-.btn-buscar:active { 
-    transform: translateY(0) scale(.95); 
-}
-div.cajabuscar input{
-    background-color: #4E5C72;
-    color: rgb(255, 255, 255);
-    border: none; 
-    padding: 0 0.6rem; 
-    height: 40px; 
-    flex: 1; 
-}
-div.cajabuscar input::placeholder{
-    color: rgb(255, 255, 255);
-}
-
-.menu-toggle-checkbox { 
-    display: none; 
-}
-.menu-toggle-label { 
-    display: block;
-    cursor: pointer; 
-}  
-.sideMenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 208px;
-    background: #14233B;
-    padding: 0.6rem 0;
-    z-index: 90;
-  }
-.menu-toggle-checkbox:checked ~ .sideMenu {
-    display: block; 
-}
-.sideMenu__grupo {
-    list-style: none;
-    margin: 0; 
-    padding: 0; 
-}
-.sideMenu__grupo a {
-    display: flex;
-    align-items: center; 
-    gap: 0.6rem;
-    padding: 0.5rem 1.25rem; 
-    color: #AAB0BB; 
-    font-size: 0.9rem;
-  }
-.sideMenu__grupo a:hover {
-    background: #1B2A43;
-    color: #fff; 
-}
-.sideMenu__ico {
-    width: 20px; 
-    height: 20px; 
-    flex-shrink: 0; 
-}
-.sideMenu__divisor {
-    border: none; 
-    border-top: 1px solid #4E5C72; 
-    margin: 0.5rem 1.25rem; 
-}
-
 .bodyHome{
     margin-left: 6%;
     margin-right: 6%;
     color: white;
     font-family: "Inter", sans-serif;
+}
+
+/* ---------- Barra de navegación (iframe con pages/navbar.html) ---------- */
+/* El contenedor guarda el lugar de la barra; el iframe va encima */
+.navbar-contenedor {
+    position: relative;
+    z-index: 100;
+    height: 116px;                 /* celular: barra + buscador abajo */
+}
+
+.navbar-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Con el menú abierto el iframe ocupa toda la pantalla */
+.navbar-iframe--abierto {
+    height: 100vh;
+}
+
+@media (min-width: 600px) {
+    .navbar-contenedor { height: 126px; }   /* tablet: logo más grande */
+}
+
+@media (min-width: 1024px) {
+    .navbar-contenedor { height: 80px; }    /* escritorio: todo en una fila */
 }
 
 .footer-iframe {

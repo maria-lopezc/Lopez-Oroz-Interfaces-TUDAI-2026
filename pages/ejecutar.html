@@ -8,52 +8,10 @@
     <link rel="stylesheet" href="../css/ejecutar.css">
 </head>
 <body>
-    <!--Es correcto con checkbox o deberia usar js?-->
-    <header>
-    <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
-    <div class="hor mainHeader">
-      <label for="menu-toggle" class="menu-toggle-label">
-        <img class="icon" src="../img/Menu Hamburguesa.png" alt="Abrir menú">
-      </label>
-      <img class="logoPrincipal" src="../img/Logo completo.png" alt="">
-      <div class="cajabuscar">
-        <input id="buscar" type="text" placeholder="Buscar"/>
-        <button class="btn-buscar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>
-          </svg>
-        </button>
-      </div>
-      <img src="../img/Grupo Derecha.png" alt="">
+    <div class="navbar-contenedor">
+      <iframe class="navbar-iframe" src="navbar.html" title="Barra de navegación" scrolling="no"></iframe>
     </div>
-
-    <nav class="sideMenu">
-      <ul class="sideMenu__grupo">
-        <li><a href="home.html"><img class="sideMenu__ico" src="../img/icons/icono_home.svg" alt="">Inicio</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/shopping_cart.svg" alt="">Carrito</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/icono_top.svg" alt="">Top en ventas</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/nuevo_icon.svg" alt="">Nuevos</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/update_icon.svg" alt="">Actualizados</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/premio_icon.svg" alt="">Premiados</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/multiplayer_icon.svg" alt="">Multijugador</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/leaderboard_icon.svg" alt="">Tablas de clasificación</a></li>
-      </ul>
-      <hr class="sideMenu__divisor">
-      <ul class="sideMenu__grupo">
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/accion_icon.svg" alt="">Accion</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/arcade_icon.svg" alt="">Arcade</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/icono_aventura.svg" alt="">Aventuras</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/icono_click.svg" alt="">Click</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/conducir_icon.svg" alt="">Conducir</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/deportes_icon.svg" alt="">Deportes</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/target.svg" alt="">Disparos</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/cartas_icon.svg" alt="">Cartas</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/io_icon.svg" alt="">.io</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/mesa_icon.svg" alt="">Mesa</a></li>
-        <li><a href="#"><img class="sideMenu__ico" src="../img/icons/puzzle_icon.svg" alt="">Puzzle</a></li>
-      </ul>
-    </nav>
-  </header>
+    <script src="../js/navbar-iframe.js"></script>
 
     <div class="bodyHome">
         <div class="hor">
