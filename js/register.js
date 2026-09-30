@@ -19,6 +19,6 @@ formulario.addEventListener('submit', (evento) => {
   formulario.classList.add('formulario-validado');  // el CSS muestra los errores en rojo
 
   if (formulario.checkValidity()) {
-    window.location.href = '../home.html';
+    window.location.href = 'home.html';
   }
 })
