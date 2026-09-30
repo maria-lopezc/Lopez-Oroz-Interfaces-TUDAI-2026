@@ -24,7 +24,7 @@
 .navbar__izquierda {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .navbar__boton-menu {
@@ -36,8 +36,8 @@
 
 .navbar__logo {
     display: block;
-    height: 26px;
-    width: auto;
+    width: 130px;                  /* entra en celulares de 320px */
+    height: auto;
 }
 
 /* ---------- Buscador ---------- */
@@ -228,6 +228,7 @@
     }
 
     .navbar__logo {
+        width: auto;
         height: 50px;
     }
 

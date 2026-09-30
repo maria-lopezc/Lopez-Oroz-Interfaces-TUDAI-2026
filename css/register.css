@@ -72,14 +72,14 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
 
 /* ---------- 7. BOTONES ---------- */
 .acciones { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 14px 10px; }
-.texto-acciones { font-size: 18px; line-height: 32px; }
+.texto-acciones { font-size: 18px; line-height: 32px; text-align: center; }
 
 .boton-principal { min-height: 56px; margin: 12px 0 8px; padding: 10px 24px; border: 0; border-radius: 20px;
                      background: var(--azul); color: white; font-size: 24px; cursor: pointer; transition: .25s; }
 .boton-principal:hover { transform: translateY(-3px); }                    /* se eleva */
 
-.botones-sociales { display: flex; gap: 14px; width: 320px; max-width: 100%; padding: 14px 0 4px; }
-.boton-social { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+.botones-sociales { display: flex; flex-wrap: wrap; gap: 14px; width: 320px; max-width: 100%; padding: 14px 0 4px; }
+.boton-social { flex: 1 1 120px; display: flex; align-items: center; justify-content: center; gap: 5px;
                 min-height: 52px; padding: 6px 12px; border-radius: 10px; background: var(--gris-claro); color: black; transition: .25s; }
 .boton-social:hover { background: var(--gris-medio); }          /* hover del Figma */
 .boton-social img { width: 42px; height: 42px; }
@@ -90,6 +90,10 @@ input:checked + .casilla-cuadro::after { transform: scale(1); }                 
 @media (min-width: 600px) {
   .fila { flex-direction: row; }
   .boton-principal { min-height: 70px; padding: 0 64px; font-size: 30px; }
+}
+
+@media (min-width: 768px) {
+  .footer-iframe { height: 580px; }   /* footer en 3 columnas */
 }
 
 @media (min-width: 1200px) {
