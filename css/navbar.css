@@ -7,7 +7,7 @@
     z-index: 100;
     position: relative;
     display: flex;
-    flex-wrap: wrap;               /* en celular el buscador baja a otra fila */
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
@@ -31,13 +31,13 @@
 
 .navbar__logo {
     display: block;
-    width: 130px;                  /* entra en celulares de 320px */
+    width: 130px;
     height: auto;
 }
 
 /* ---------- Buscador ---------- */
 .buscador {
-    order: 3;                      /* en celular va abajo, ocupando todo el ancho */
+    order: 3;                      
     display: flex;
     width: 100%;
     height: 40px;
@@ -79,8 +79,6 @@
     transition: transform .35s;
 }
 
-/* Hover: al pasar por cualquier parte del buscador (o escribir en él)
-   se ilumina toda la barra, incluida la lupa */
 .buscador:hover,
 .buscador:focus-within {
     box-shadow: 0 0 14px rgba(54, 123, 249, .6);
@@ -97,7 +95,7 @@
 }
 
 .buscador__input:focus {
-    outline: none;                 /* el brillo de la barra ya marca el foco */
+    outline: none;                 
 }
 
 .buscador__boton:active img {
@@ -137,7 +135,6 @@
     z-index: 90;
     width: 280px;
     max-width: 100%;
-    max-height: 80vh;
     overflow-y: auto;
     padding: 24px 16px;
     box-sizing: border-box;
@@ -231,7 +228,6 @@
     }
 }
 
-/* ---------- Escritorio (1024px o más): todo en una fila, igual al Figma ---------- */
 @media (min-width: 1024px) {
     .navbar {
         flex-wrap: nowrap;

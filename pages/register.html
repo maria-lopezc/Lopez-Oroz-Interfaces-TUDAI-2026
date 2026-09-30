@@ -20,11 +20,9 @@
 
     <h1 class="titulo">Registrarse</h1>
 
-    <!-- novalidate: los errores los mostramos nosotros con CSS, no el navegador -->
     <form class="formulario" id="registro" novalidate>
 
       <div class="campos">
-        <!-- Cada campo = etiqueta + input + mensaje de error (oculto hasta que falla) -->
         <div class="campo">
           <label for="nombre">Nombre</label>
           <input id="nombre" name="nombre" placeholder="Nombre" required minlength="2">
@@ -37,7 +35,6 @@
           <span class="mensaje-error">Ingresá tu apellido.</span>
         </div>
 
-        <!-- Fecha y nickname en la misma fila -->
         <div class="fila">
           <div class="campo">
             <label for="fecha">Fecha de Nacimiento</label>
@@ -69,14 +66,12 @@
           <span class="mensaje-error">Las contraseñas no coinciden.</span>
         </div>
 
-        <!-- Casilla propia: el input real se oculta y .casilla-cuadro dibuja el cuadrado -->
         <label class="casilla">
           <input type="checkbox" name="terminos" required>
           <span class="casilla-cuadro"></span>
           Acepto los Términos y Condiciones
         </label>
 
-        <!-- Captcha de muestra hecho en CSS (para uso real, reemplazar por reCAPTCHA) -->
         <label class="captcha">
           <input type="checkbox" name="captcha" required>
           <span class="casilla-cuadro"></span>

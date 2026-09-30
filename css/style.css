@@ -4,10 +4,6 @@ body{
     box-sizing: border-box;
 }
 
-*, *::before, *::after {
-    box-sizing: inherit;
-}
-
 .hor{
     display: flex;
     flex-direction: row;
@@ -34,6 +30,7 @@ a:hover {
 }
 
 .fillScreen{
+    cursor: pointer;
     margin-top: 0.7%;
     margin-bottom: 0.2%;    
     display: block;

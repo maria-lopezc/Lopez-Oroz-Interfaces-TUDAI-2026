@@ -73,14 +73,6 @@
     animation: loader-fill 5s linear forwards;
 }
 
-    /* Tramos (total 5s):
-       0–1.5s    0% → 50%
-       1.5–3s   50% → 75%
-       3–3.2s   quieto en 75%
-       3.2–4.2s 75% → 95%
-       4.2–4.5s quieto en 95%
-       4.5–5s   95% → 100%
-       Barra y número usan los mismos porcentajes para ir sincronizados. */
 @keyframes loader-count {
     0%   { --pct: 0; }
     30%  { --pct: 50; }
@@ -111,7 +103,6 @@
     100% { transform: scale(1);    opacity: 1; }
 }
 
-/* ===== ETIQUETAS DE CADA SECCIÓN ===== */
 .destacado{
     padding: 4px 0 12px;
 }
@@ -144,7 +135,6 @@
     background-color: #367BF9;
 }
 
-/* ===== FLECHAS (botón redondo del Figma "boton_carrusel") ===== */
 .flecha{
     display: grid;
     place-items: center;
@@ -168,12 +158,10 @@
     transform: scale(.95);
 }
 
-/* La flecha que no se puede usar (inicio o final del carrusel) se oculta */
 .flecha--oculta{
     display: none;
 }
 
-/* ===== CARD DE JUEGO (imagen + hover) ===== */
 .card{
     position: relative;
     display: block;
@@ -194,23 +182,21 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;                    /* por encima de la capa oscura (::after) */
+    z-index: 1;                
     padding: 10px 12px;
     color: white;
     font-family: "Inter", sans-serif;
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.25;
-    text-align: center;            /* centrado, alineado con el play */
+    text-align: center;          
 
-    /* títulos largos: máximo 2 líneas y "…" */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 
-    /* misma transición que la capa oscura: aparecen juntos */
     opacity: 0;
     transition: opacity .3s ease;
 }
@@ -220,8 +206,6 @@
     opacity: 1;
 }
 
-/* Hover del Figma: capa oscura al 75% con el ícono en el centro.
-   El ícono arranca chico y crece mientras aparece la capa. */
 .card::after{
     content: "";
     position: absolute;
@@ -237,18 +221,15 @@
     background-size: 38% auto;
 }
 
-/* Los juegos pagos muestran el carrito en vez del play */
 .card--compra::after{
     background-image: url("../img/icons/carrito_hover.svg");
 }
 
-/* En el juego principal el play es más chico en proporción */
 .card--destacado:hover::after,
 .card--destacado:focus-visible::after{
     background-size: 22% auto;
 }
 
-/* ===== PRECIO (solo en Top en ventas) ===== */
 .precio{
     position: absolute;
     right: 0;
@@ -265,7 +246,6 @@
     font-weight: 600;
 }
 
-/* ===== CARRUSEL PRINCIPAL ===== */
 .carrusel-principal{
     position: relative;
     display: flex;
@@ -273,7 +253,6 @@
     gap: 24px;
 }
 
-/* En celular las flechas van arriba de la imagen */
 .carrusel-principal__flecha{
     position: absolute;
     top: 50%;
@@ -294,7 +273,6 @@
     border-radius: 10px;
 }
 
-/* Todas las imágenes en fila; JS la mueve con translateX */
 .carrusel-principal__pista{
     display: flex;
     transition: transform .6s cubic-bezier(.22, 1, .36, 1);
@@ -304,10 +282,9 @@
     flex: 0 0 100%;
     aspect-ratio: 1538 / 867;
     border-radius: 0;
-    /* Estado "inactivo": chico, apagado y desenfocado */
-    opacity: .3;
+    opacity: 0;
     filter: blur(4px) brightness(.7);
-    transition: opacity .5s ease, filter .5s ease, transform .5s ease;
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 1s ease;
     transform: skewX(-10deg);
 }
 
@@ -343,12 +320,10 @@
     background-color: #367BF9;
 }
 
-/* ===== CARRUSELES CHICOS ===== */
 .fila{
     position: relative;
 }
 
-/* Flechas encima de las cards, centradas en vertical */
 .fila__flecha{
     position: absolute;
     top: 50%;
@@ -369,7 +344,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    scrollbar-width: none;         /* se navega con las flechas o deslizando */
+    scrollbar-width: none;        
 }
 
 .carrusel::-webkit-scrollbar{
@@ -377,7 +352,7 @@
 }
 
 .carrusel .card{
-    flex: 0 0 82%;                 /* celular: se ve una card y un poco de la siguiente */
+    flex: 0 0 82%;                
     aspect-ratio: 16 / 9;
     scroll-snap-align: start;
 }
@@ -387,7 +362,6 @@
     display: none;
 }
 
-/* ===== TABLET ===== */
 @media (min-width: 768px) {
     .bodyHome {
         padding: 24px;
@@ -398,9 +372,8 @@
     }
 }
 
-/* ===== ESCRITORIO ===== */
 @media (min-width: 1024px) {
-    /* Las flechas del carrusel principal pasan al costado, como en el Figma */
+
     .carrusel-principal__flecha,
     .carrusel-principal__flecha:hover {
         position: static;
@@ -422,6 +395,6 @@
     }
 
     .carrusel .card {
-        flex-basis: calc((100% - 60px) / 3.5);   /* 3 cards y media, como en el Figma */
+        flex-basis: calc((100% - 60px) / 2.9);  
     }
 }

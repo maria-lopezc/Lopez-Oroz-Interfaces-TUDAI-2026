@@ -22,6 +22,7 @@ img {
     place-items: center;
     color: #aab0bb;
     transition: color .3s ease;
+    cursor: pointer;
 }
 .btn-compartir svg { 
     width: 34px; 
@@ -76,18 +77,16 @@ img {
 div.bodyHome h1{
     font-family: "Lohit Bengali", sans-serif;
     font-size: 1.5rem;
-    margin-top: 0%;
 }
 
 .secInfo{
     background-color: #4E5C72;
-    margin: 0;
     padding: 12px;
     height: auto;
     width: 100%;
 }
 .infoJuego {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
 }
 div.infoJuego h2{
@@ -102,15 +101,15 @@ div.comentarios form input::placeholder{
     color: #4E5C72;
 }
 div.comentarios form input{
-    flex: 1;
     min-width: 0;
     margin-left: 8px;
     background-color: #AAB0BB;
     min-height: 40px;
-    width: 100%;
+    width: 80%;
 }
 
 .btn-enviar {
+    cursor: pointer;
     margin-top: 1%;
     position: relative; 
     overflow: hidden; 
@@ -141,20 +140,46 @@ div.comentarios form input{
 }
 
 div.comentario img{
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    margin-right: 8px;
-    margin-top: 8px;
+    width: 3%;
+    height: 3%;
+    margin-right: 2%;
+}
+.respuesta, .comentarioText, .headCom, .user, .bodyCom, .arroba, .bodyCom p{
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+.cajaComentario, .comentario, .rCom{
+    margin-top: 2%;
+}
+.headCom, .rCom, .bodyCom{
+    align-items: center;
 }
 .respuesta{
-    margin-left: clamp(12px, 5%, 40px);
+    margin-left: 5%;
 }
-.comentario p{
-    margin-bottom: 8px;
-    margin-top: 8px;
+.comentarioText{
+    width: 80%;
 }
+.headCom p, .rCom{
+    font-size: 75%;
+    color: #878F9D;
+}
+.user{
+    color: #878F9D;
+    font-size: 85%;
+    font-weight: bolder;
+    margin-right: 1%;
+}
+.bodyCom{
+    font-size: 85%;
+}
+.rCom:hover, .arroba{
+    color: #367BF9;
+}
+.arroba{
+    margin-right: 1%;
+}
+
 .infoJuego .hor {
     flex-wrap: wrap;
 }
@@ -163,14 +188,9 @@ div.comentario img{
     flex: 1 1 calc(50% - 8px);
     min-width: 0;
 }
-.comentarios-layout {
-    flex-direction: row;
-    align-items: flex-start;
-}
 
 .comentarios {
-    flex: 1;
-    width: auto;
+    width: 80%;
 }
 
 .banner {
