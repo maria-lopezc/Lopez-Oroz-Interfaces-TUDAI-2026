@@ -1,0 +1,33 @@
+export default class Ficha {
+    constructor(x, y, w, h, ang) {
+        this._x = x;
+        this._y = y;
+        this._w = w;
+        this._h = h;
+        this._ang = ang;
+    }
+
+    get x() {
+        return this._x;
+    }
+
+    get y() {
+        return this._y;
+    }
+
+    get w() {
+        return this._w;
+    }
+
+    get h() {
+        return this._h;
+    }
+
+    get ang() {
+        return this._ang;
+    }
+
+    set ang(value) {
+        this._ang = value;
+    }
+}

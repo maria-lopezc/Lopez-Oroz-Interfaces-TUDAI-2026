@@ -1,0 +1,114 @@
+:root {
+    --fondo: #1e1b2e;
+    --tarjeta: #2a2640;
+    --acento: #f2a541;
+    --texto: #f4f1fa;
+    --texto-suave: #b9b3cf;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pantalla {
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.oculto { display: none; }
+
+.titulo {
+    margin: 0;
+    font-size: 3.5rem;
+    letter-spacing: 0.3rem;
+    color: var(--acento);
+}
+
+.subtitulo {
+    margin: 0;
+    color: var(--texto-suave);
+    text-align: center;
+}
+
+.opciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--acento);
+    background: var(--tarjeta);
+    color: var(--texto);
+    font-size: 1rem;
+}
+
+.boton {
+    padding: 14px 48px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background: var(--acento);
+    color: var(--fondo);
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+}
+
+.boton:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+canvas {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+}
+
+#juego{
+    display: flex;
+    flex-direction: column;
+}
+
+#finNivel {
+    text-align: center;
+    margin-top: 16px;
+}
+
+#mensajeFin {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+#tiempo {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--acento);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}

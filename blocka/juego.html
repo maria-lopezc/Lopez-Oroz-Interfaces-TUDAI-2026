@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="blocka.css">
+</head>
+<body>
+    <main id="menu" class="pantalla">
+        <h1 class="titulo">BLOCKA</h1>
+        <p class="subtitulo">Rotá las piezas hasta reconstruir la imagen</p>
+
+        <div class="opciones">
+            <label for="dif">Dificultad</label>
+            <select id="dif">
+                <option value="facil">Fácil</option>
+                <option value="medio">Medio</option>
+                <option value="dificil">Difícil</option>
+            </select>
+        </div>
+
+        <button id="btnComenzar" class="boton">Comenzar</button>
+    </main>
+    <section id="juego">
+        <p id="tiempo" class="oculto">00:00</p>
+        <canvas class="oculto" id="canva" width="500" height="500"></canvas>
+
+        <div id="finNivel" class="tarjeta oculto">
+            <p id="mensajeFin"></p>
+            <p id="recordFin"></p>
+            <div class="acciones">
+                <button id="btnSiguiente" class="boton">Siguiente nivel</button>
+                <button id="btnMenu" class="boton">Menú</button>
+            </div>
+        </div>
+    </section>
+    
+    <script type="module" src="blocka.js"></script>
+</body>
+</html>
