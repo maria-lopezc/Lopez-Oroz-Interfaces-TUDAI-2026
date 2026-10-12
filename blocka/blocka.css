@@ -76,6 +76,38 @@ select {
     filter: brightness(1.1);
 }
 
+.boton--ayuda {
+    align-self: center;
+    margin-top: 12px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    background: transparent;
+    border: 2px solid var(--acento);
+    color: var(--acento);
+}
+
+.boton--ayuda:hover:not(:disabled) {
+    background: var(--acento);
+    color: var(--fondo);
+}
+
+.boton--ayuda:focus-visible {
+    outline: 2px solid var(--texto);
+    outline-offset: 3px;
+}
+
+.boton--ayuda:disabled {
+    border-color: var(--texto-suave);
+    color: var(--texto-suave);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.boton--ayuda:disabled:hover {
+    transform: none;
+    filter: none;
+}
+
 canvas {
     background: white;
     border-radius: 8px;

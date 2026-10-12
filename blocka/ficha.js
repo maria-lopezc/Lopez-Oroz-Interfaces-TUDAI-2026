@@ -1,10 +1,11 @@
 export default class Ficha {
-    constructor(x, y, w, h, ang) {
+    constructor(x, y, w, h, ang, fija) {
         this._x = x;
         this._y = y;
         this._w = w;
         this._h = h;
         this._ang = ang;
+        this._fija = false;
     }
 
     get x() {
@@ -26,8 +27,15 @@ export default class Ficha {
     get ang() {
         return this._ang;
     }
+    get fija(){
+        return this._fija;
+    }
 
     set ang(value) {
         this._ang = value;
+    }
+
+    fijar() {
+        this._fija=true;
     }
 }

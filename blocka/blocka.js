@@ -44,8 +44,10 @@ const btnSig = document.getElementById("btnSiguiente");
 const btnMenu = document.getElementById("btnMenu");
 const tiempoEl = document.getElementById("tiempo");
 const recordEl = document.getElementById("recordFin");
+const btnAyuda = document.getElementById("btnAyuda");
 let inicioNivel = 0;
 let idTimer = null;
+let ayuda=true;
 
 let clickeable=true;
 
@@ -79,6 +81,7 @@ const bancoImagenes = [
     'img/rio.svg',
     'img/ruina.svg'
 ];
+let imgUsadas=[];
 
 let dificultadActual = "facil";
 let columnas = 2;
@@ -90,6 +93,10 @@ btnComenzar.addEventListener("click", function() {
     menu.classList.add("oculto");
     canvas.classList.remove("oculto");
     tiempoEl.classList.remove("oculto");
+    btnAyuda.classList.remove("oculto");
+    btnAyuda.disabled = false
+    imgUsadas=[];
+    ayuda=true;
     aplicarDificultad();
     iniciarNivel();
 });
@@ -104,8 +111,24 @@ btnMenu.addEventListener("click", function() {
 
 btnSig.addEventListener("click", function() {
     nivelActual++;
+    ayuda=true;
     iniciarNivel();
 });
+
+btnAyuda.addEventListener("click",function(){
+    ayuda=false;
+    btnAyuda.disabled = true;
+    inicioNivel -= 5000;
+    actualizarTiempo();
+    const resolver=fichas.filter(ficha => Math.abs(ficha.ang) > 0.01);
+    if(resolver != undefined || array.length != 0){
+        resolver[0].ang = 0;
+        resolver[0].fijar();
+        dibujarJuego();
+        verificarVictoria();
+    }
+}
+)
 
 //Bloquear el menú desplegable del botón derecho en el Canvas
 canvas.addEventListener('contextmenu', function(event) {
@@ -125,7 +148,8 @@ canvas.addEventListener('mousedown', function(event) {
             const clicEnX = mouseX >= ficha.x && mouseX <= (ficha.x + ficha.w);
             const clicEnY = mouseY >= ficha.y && mouseY <= (ficha.y + ficha.h);
 
-            if (clicEnX && clicEnY) {
+            if ((clicEnX && clicEnY)&&!ficha.fija) {
+
                 
                 // --- DETECCIÓN DE BOTONES ---
                 if (event.button === 0) {
@@ -137,12 +161,15 @@ canvas.addEventListener('mousedown', function(event) {
                     ficha.ang += Math.PI / 2;
                 }
 
+                //Limite 2pi
                 ficha.ang = ficha.ang % (Math.PI * 2);
 
+                //Angulo negativo pasa a su contraparte positiva
                 if (ficha.ang < 0) {
                     ficha.ang += Math.PI * 2;
                 }
                 
+                //Elimina errores de redondeo
                 if (Math.abs(ficha.ang) < 0.01 || Math.abs(ficha.ang - Math.PI * 2) < 0.01) {
                     ficha.ang = 0;
                 }
@@ -169,7 +196,10 @@ function aplicarDificultad() {
 function iniciarNivel() {
     finNivel.classList.add("oculto");
     tiempoEl.textContent = "Tiempo: 00:00";
-    const indice = Math.floor(Math.random() * bancoImagenes.length);
+    btnAyuda.classList.remove("oculto");
+    btnAyuda.disabled = false
+    const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta))
+    const indice = Math.floor(Math.random() * usables.length);
     img.onload = function () {
         iniciarTablero();
         dibujarJuego();
@@ -177,7 +207,8 @@ function iniciarNivel() {
         iniciarTemporizador();
     };
 
-    img.src = bancoImagenes[indice]; 
+    img.src = usables[indice]; 
+    imgUsadas.push(usables[indice]);
 }
 
 function verificarVictoria() {
@@ -197,6 +228,7 @@ function verificarVictoria() {
 
         filtroActual = "ninguno";
         dibujarJuego();
+        btnAyuda.classList.add("oculto");
         if (nivelActual < 3) {
             msj.innerText = `¡Nivel ${nivelActual} completado! Prepárate para el siguiente nivel...`;
             btnSig.classList.remove("oculto");
@@ -223,7 +255,7 @@ function iniciarTablero(){
             let posY = f * altoFicha;
             
             // Ángulo inicial aleatorio 
-            const angulosPosibles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
+            const angulosPosibles = [Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
             let anguloAleatorio = angulosPosibles[Math.floor(Math.random() * angulosPosibles.length)];
 
             let nuevaFicha = new Ficha(posX, posY, anchoFicha, altoFicha, anguloAleatorio);
