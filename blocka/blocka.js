@@ -93,21 +93,15 @@ let imgUsadas=[];
 
 let imgElegida = null;
 
-// Menú: una miniatura por cada imagen del banco. Al tocar una se abre el panel de dificultad
+// Menú: una miniatura por cada imagen del banco (solo se muestran, la imagen se elige al azar)
 const galeria = document.getElementById("galeria");
 const config = document.getElementById("config");
 const previa = document.getElementById("previa");
 
 bancoImagenes.forEach(ruta => {
-    const mini = document.createElement("button");
-    mini.type = "button";
+    const mini = document.createElement("div");
     mini.classList.add("mini");
     mini.innerHTML = `<img src="${ruta}" alt="Imagen ${ruta.split("/")[1].replace(".svg", "")}">`;
-
-    mini.addEventListener("click", function() {
-        abrirPanel(ruta);
-    });
-
     galeria.appendChild(mini);
 });
 

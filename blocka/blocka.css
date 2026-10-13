@@ -164,7 +164,6 @@ canvas {
     border-radius: 10px;
     border: 3px solid var(--acento);
     background: var(--tarjeta);
-    cursor: pointer;
 }
 
 .mini img {
@@ -174,7 +173,7 @@ canvas {
     object-fit: cover;
 }
 
-/* Mismo efecto que el hover de las cards del home: capa oscura + ícono de play que crece */
+/* Capa oscura + ícono de play (mismo efecto que el hover de las cards del home) */
 .mini::after {
     content: "";
     position: absolute;
@@ -184,14 +183,12 @@ canvas {
     transition: opacity .3s ease, background-size .3s ease;
 }
 
-.mini:hover::after,
-.mini:focus-visible::after,
 .mini--sorteada::after {
     opacity: 1;
     background-size: 38% auto;
 }
 
-/* Imagen sorteada: late 3 veces con el mismo efecto del hover */
+/* Imagen sorteada: late 3 veces mostrando la capa con el play */
 .mini--sorteada {
     z-index: 1;   /* para que al agrandarse quede por encima de las vecinas */
     animation: latido .4s ease 3;
@@ -199,15 +196,6 @@ canvas {
 
 @keyframes latido {
     50% { transform: scale(1.1); }
-}
-
-/* Botón "Elegir al azar": con borde, para que no compita con las imágenes */
-.boton--azar {
-    padding: 10px 24px;
-    font-size: 1rem;
-    background: transparent;
-    border: 2px solid var(--acento);
-    color: var(--acento);
 }
 
 /* Panel de dificultad: fondo oscuro que tapa la pantalla y una tarjeta centrada */
