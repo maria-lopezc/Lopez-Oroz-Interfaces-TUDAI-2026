@@ -1,5 +1,5 @@
 export default class Ficha {
-    constructor(x, y, w, h, ang, fija) {
+    constructor(x, y, w, h, ang) {
         this._x = x;
         this._y = y;
         this._w = w;

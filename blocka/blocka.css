@@ -144,3 +144,6 @@ canvas {
     text-align: center;
     font-variant-numeric: tabular-nums;
 }
+.final{
+    color: red !important;
+}

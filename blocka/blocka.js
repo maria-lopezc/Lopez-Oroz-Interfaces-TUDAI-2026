@@ -35,6 +35,9 @@ function actualizarRecord(nivel, tiempo) {
     return esRecord;
 }
 
+const costo_ayuda = 5000; 
+const umbral_urgente = 3000; 
+
 const menu = document.getElementById("menu");
 const canvas=document.getElementById("canva");
 const btnComenzar = document.getElementById("btnComenzar");
@@ -45,9 +48,10 @@ const btnMenu = document.getElementById("btnMenu");
 const tiempoEl = document.getElementById("tiempo");
 const recordEl = document.getElementById("recordFin");
 const btnAyuda = document.getElementById("btnAyuda");
+const btnReintentar = document.getElementById("btnReintentar");
 let inicioNivel = 0;
 let idTimer = null;
-let ayuda=true;
+let limiteActual = null;
 
 let clickeable=true;
 
@@ -57,6 +61,12 @@ const filtrosPorNivel = {
     1: "brillo",  
     2: "grises",   
     3: "negativo"  
+};
+
+const tiemposPorNivel = {
+    "facil": 25000,  
+    "medio": 45000,   
+    "dificil": 85000  
 };
 
 // cargar imagen
@@ -93,10 +103,7 @@ btnComenzar.addEventListener("click", function() {
     menu.classList.add("oculto");
     canvas.classList.remove("oculto");
     tiempoEl.classList.remove("oculto");
-    btnAyuda.classList.remove("oculto");
-    btnAyuda.disabled = false
     imgUsadas=[];
-    ayuda=true;
     aplicarDificultad();
     iniciarNivel();
 });
@@ -111,24 +118,25 @@ btnMenu.addEventListener("click", function() {
 
 btnSig.addEventListener("click", function() {
     nivelActual++;
-    ayuda=true;
     iniciarNivel();
 });
 
 btnAyuda.addEventListener("click",function(){
-    ayuda=false;
     btnAyuda.disabled = true;
-    inicioNivel -= 5000;
-    actualizarTiempo();
-    const resolver=fichas.filter(ficha => Math.abs(ficha.ang) > 0.01);
-    if(resolver != undefined || array.length != 0){
-        resolver[0].ang = 0;
-        resolver[0].fijar();
-        dibujarJuego();
-        verificarVictoria();
+    if(clickeable){
+        inicioNivel -= costo_ayuda;
+        tick();
+        if(clickeable){
+            const resolver=fichas.filter(ficha => Math.abs(ficha.ang) > 0.01);
+            if(resolver.length > 0){
+                resolver[0].ang = 0;
+                resolver[0].fijar();
+                dibujarJuego();
+                verificarVictoria();
+            } 
+        }
     }
-}
-)
+});
 
 //Bloquear el menú desplegable del botón derecho en el Canvas
 canvas.addEventListener('contextmenu', function(event) {
@@ -182,6 +190,8 @@ canvas.addEventListener('mousedown', function(event) {
     
 });
 
+btnReintentar.addEventListener("click", armarNivel);
+
 function aplicarDificultad() {
     dificultadActual = dif.value;
     if (dificultadActual === "facil") {
@@ -195,27 +205,41 @@ function aplicarDificultad() {
 
 function iniciarNivel() {
     finNivel.classList.add("oculto");
-    tiempoEl.textContent = "Tiempo: 00:00";
-    btnAyuda.classList.remove("oculto");
-    btnAyuda.disabled = false
     const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta))
     const indice = Math.floor(Math.random() * usables.length);
-    img.onload = function () {
-        iniciarTablero();
-        dibujarJuego();
-        clickeable=true;
-        iniciarTemporizador();
-    };
+    img.onload = armarNivel;
 
     img.src = usables[indice]; 
     imgUsadas.push(usables[indice]);
 }
 
+function armarNivel() {
+    finNivel.classList.add("oculto");
+    btnReintentar.classList.add("oculto");
+    iniciarTablero();
+    dibujarJuego();
+    clickeable=true;
+    btnAyuda.disabled = false
+    btnAyuda.classList.remove("oculto");
+    
+    limiteActual=null;
+    if(nivelActual>1){
+        limiteActual = tiemposPorNivel[dificultadActual];
+    }
+    iniciarTemporizador();
+}
+
+
 function verificarVictoria() {
     const juegoCompletado = fichas.every(ficha => Math.abs(ficha.ang) < 0.01);
 
     if (juegoCompletado) {
+        if (limiteActual !== null && tiempoTranscurrido() >= limiteActual) {
+            perderNivel();
+            return;
+        }
         clickeable=false;
+        btnReintentar.classList.add("oculto");
 
         detenerTemporizador();  
         actualizarTiempo()
@@ -288,6 +312,20 @@ function dibujarJuego() {
             let imgDataFiltrada = aplicarFiltroAImageData(imgDataFicha, filtroActual);
             ctx.putImageData(imgDataFiltrada, ficha.x, ficha.y);
         }
+
+        if (ficha.fija && clickeable) {
+            const grosor = 4;
+            ctx.save();
+            ctx.strokeStyle = "#f2a541"; 
+            ctx.lineWidth = grosor;
+            ctx.strokeRect(
+                ficha.x + grosor / 2,
+                ficha.y + grosor / 2,
+                ficha.w - grosor,
+                ficha.h - grosor
+            );
+            ctx.restore();
+        }
     });
 }
 
@@ -352,7 +390,7 @@ function iniciarTemporizador() {
     detenerTemporizador();
     inicioNivel = performance.now();
     actualizarTiempo();
-    idTimer = setInterval(actualizarTiempo, 100);
+    idTimer = setInterval(tick, 100);
 }
 
 function detenerTemporizador() {
@@ -365,7 +403,18 @@ function tiempoTranscurrido() {
 }
 
 function actualizarTiempo() {
-    tiempoEl.textContent = "Tiempo: " + formatearTiempo(tiempoTranscurrido());
+    if(limiteActual!=null){
+        const restante = Math.max(0,limiteActual-tiempoTranscurrido());
+        tiempoEl.textContent = "Tiempo restante: " + formatearTiempo(restante);
+        tiempoEl.classList.toggle("final", restante <= umbral_urgente);
+        if (restante <= costo_ayuda) {
+            btnAyuda.disabled = true;
+        }
+    }else{
+        tiempoEl.classList.remove("final");
+        tiempoEl.textContent = "Tiempo: " + formatearTiempo(tiempoTranscurrido());
+    }
+        
 }
 
 function formatearTiempo(ms) {
@@ -374,4 +423,23 @@ function formatearTiempo(ms) {
     const seg = String(total % 60).padStart(2, "0");
     const dec = Math.floor((ms % 1000) / 100);
     return `${min}:${seg}.${dec}`;
+}
+
+function tick() {
+    actualizarTiempo();
+    if (limiteActual !== null && tiempoTranscurrido() >= limiteActual) {
+        perderNivel();
+    }
+}
+
+function perderNivel() {
+    detenerTemporizador();
+    clickeable=false;
+    btnAyuda.classList.add("oculto");
+    msj.innerText = `¡Se agotó el tiempo! Perdiste`;
+    recordEl.innerText = "";
+    btnSig.classList.add("oculto");
+    btnReintentar.classList.remove("oculto");
+    btnMenu.classList.remove("oculto");
+    finNivel.classList.remove("oculto");
 }
