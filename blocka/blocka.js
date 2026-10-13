@@ -40,7 +40,6 @@ const umbral_urgente = 3000;
 
 const menu = document.getElementById("menu");
 const canvas=document.getElementById("canva");
-const btnComenzar = document.getElementById("btnComenzar");
 const finNivel = document.getElementById("finNivel");
 const msj = document.getElementById("mensajeFin");
 const btnSig = document.getElementById("btnSiguiente");
@@ -70,7 +69,6 @@ const tiemposPorNivel = {
 };
 
 // cargar imagen
-let dif=document.getElementById("dif")
 
 let ctx=canvas.getContext("2d");
 let width=500;
@@ -93,19 +91,89 @@ const bancoImagenes = [
 ];
 let imgUsadas=[];
 
+let imgElegida = null;
+
+// Menú: una miniatura por cada imagen del banco. Al tocar una se abre el panel de dificultad
+const galeria = document.getElementById("galeria");
+const config = document.getElementById("config");
+const previa = document.getElementById("previa");
+
+bancoImagenes.forEach(ruta => {
+    const mini = document.createElement("button");
+    mini.type = "button";
+    mini.classList.add("mini");
+    mini.innerHTML = `<img src="${ruta}" alt="Imagen ${ruta.split("/")[1].replace(".svg", "")}">`;
+
+    mini.addEventListener("click", function() {
+        abrirPanel(ruta);
+    });
+
+    galeria.appendChild(mini);
+});
+
+function abrirPanel(ruta) {
+    imgElegida = ruta;
+    previa.src = ruta;
+    config.classList.remove("oculto");
+}
+
+// Elegir al azar: la miniatura sorteada hace una animación CSS y al terminar se abre el panel
+const btnAzar = document.getElementById("btnAzar");
+
+btnAzar.addEventListener("click", function() {
+    const indice = Math.floor(Math.random() * bancoImagenes.length);
+    const mini = galeria.children[indice];
+
+    btnAzar.disabled = true;
+    mini.classList.add("mini--sorteada");
+
+    mini.addEventListener("animationend", function() {
+        mini.classList.remove("mini--sorteada");
+        btnAzar.disabled = false;
+        abrirPanel(bancoImagenes[indice]);
+    }, { once: true });
+});
+
+// Cerrar el panel con la cruz o tocando fuera de él
+document.getElementById("btnCerrar").addEventListener("click", cerrarPanel);
+config.addEventListener("click", function(event) {
+    if (event.target === config) {
+        cerrarPanel();
+    }
+});
+
+function cerrarPanel() {
+    config.classList.add("oculto");
+}
+
 let dificultadActual = "facil";
 let columnas = 2;
 let filas = 2;
 let anchoFicha;
 let altoFicha;
 
+// Botones de dificultad: se marca la elegida y se habilita "Comenzar"
+const botonesDif = document.querySelectorAll(".boton--dif");
+const btnComenzar = document.getElementById("btnComenzar");
+let difElegida = null;
+
+botonesDif.forEach(boton => {
+    boton.addEventListener("click", function() {
+        botonesDif.forEach(b => b.classList.remove("boton--dif-activa"));
+        boton.classList.add("boton--dif-activa");
+        difElegida = boton.dataset.dif;
+        btnComenzar.disabled = false;
+    });
+});
+
 btnComenzar.addEventListener("click", function() {
+    cerrarPanel();
     menu.classList.add("oculto");
     canvas.classList.remove("oculto");
     tiempoEl.classList.remove("oculto");
     imgUsadas=[];
-    aplicarDificultad();
-    iniciarNivel();
+    aplicarDificultad(difElegida);
+    iniciarNivel(imgElegida);
 });
 
 btnMenu.addEventListener("click", function() {
@@ -192,8 +260,8 @@ canvas.addEventListener('mousedown', function(event) {
 
 btnReintentar.addEventListener("click", armarNivel);
 
-function aplicarDificultad() {
-    dificultadActual = dif.value;
+function aplicarDificultad(dificultad) {
+    dificultadActual = dificultad;
     if (dificultadActual === "facil") {
         columnas = 2; filas = 2;
     } else if (dificultadActual === "medio") {
@@ -203,14 +271,18 @@ function aplicarDificultad() {
     }
 }
 
-function iniciarNivel() {
+// Nivel 1: usa la imagen elegida en el menú. Siguientes niveles: una al azar entre las no usadas
+function iniciarNivel(elegida) {
     finNivel.classList.add("oculto");
-    const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta))
-    const indice = Math.floor(Math.random() * usables.length);
+    if (!elegida) {
+        const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta))
+        const indice = Math.floor(Math.random() * usables.length);
+        elegida = usables[indice];
+    }
     img.onload = armarNivel;
 
-    img.src = usables[indice]; 
-    imgUsadas.push(usables[indice]);
+    img.src = elegida;
+    imgUsadas.push(elegida);
 }
 
 function armarNivel() {

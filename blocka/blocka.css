@@ -147,3 +147,151 @@ canvas {
 .final{
     color: red !important;
 }
+
+/* Menú: galería para elegir la imagen */
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.mini {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 3px solid var(--acento);
+    background: var(--tarjeta);
+    cursor: pointer;
+}
+
+.mini img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Mismo efecto que el hover de las cards del home: capa oscura + ícono de play que crece */
+.mini::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 11, 26, .75) url("img/play.svg") center / 20% auto no-repeat;
+    opacity: 0;
+    transition: opacity .3s ease, background-size .3s ease;
+}
+
+.mini:hover::after,
+.mini:focus-visible::after,
+.mini--sorteada::after {
+    opacity: 1;
+    background-size: 38% auto;
+}
+
+/* Imagen sorteada: late 3 veces con el mismo efecto del hover */
+.mini--sorteada {
+    z-index: 1;   /* para que al agrandarse quede por encima de las vecinas */
+    animation: latido .4s ease 3;
+}
+
+@keyframes latido {
+    50% { transform: scale(1.1); }
+}
+
+/* Botón "Elegir al azar": con borde, para que no compita con las imágenes */
+.boton--azar {
+    padding: 10px 24px;
+    font-size: 1rem;
+    background: transparent;
+    border: 2px solid var(--acento);
+    color: var(--acento);
+}
+
+/* Panel de dificultad: fondo oscuro que tapa la pantalla y una tarjeta centrada */
+.fondo-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    background: rgba(2, 11, 26, .75);
+    animation: aparecer .3s ease;
+}
+
+.fondo-panel.oculto {
+    display: none;
+}
+
+.panel-dif {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    border-radius: 12px;
+    border: 3px solid var(--acento);
+    background: var(--tarjeta);
+    animation: subir .3s ease;
+}
+
+.previa {
+    width: 160px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.cerrar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--texto-suave);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.cerrar:hover {
+    color: var(--texto);
+}
+
+@keyframes aparecer {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes subir {
+    from { transform: translateY(20px); }
+    to { transform: translateY(0); }
+}
+
+.boton:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+}
+
+/* Dificultad: sin elegir se ve con borde, la elegida queda rellena */
+.boton--dif {
+    padding: 10px 24px;
+    background: transparent;
+    border: 2px solid var(--acento);
+    color: var(--acento);
+}
+
+.boton--dif-activa {
+    background: var(--acento);
+    color: var(--fondo);
+}

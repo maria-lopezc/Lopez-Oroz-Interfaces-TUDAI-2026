@@ -9,18 +9,26 @@
 <body>
     <main id="menu" class="pantalla">
         <h1 class="titulo">BLOCKA</h1>
-        <p class="subtitulo">Rotá las piezas hasta reconstruir la imagen</p>
+        <p class="subtitulo">Elegí una imagen para empezar</p>
 
-        <div class="opciones">
-            <label for="dif">Dificultad</label>
-            <select id="dif">
-                <option value="facil">Fácil</option>
-                <option value="medio">Medio</option>
-                <option value="dificil">Difícil</option>
-            </select>
+        <div id="galeria" class="galeria"></div>
+
+        <button type="button" id="btnAzar" class="boton boton--azar">Elegir al azar</button>
+
+        <!-- Panel que se abre encima de la galería al tocar una imagen -->
+        <div id="config" class="fondo-panel oculto">
+            <div class="panel-dif">
+                <button type="button" id="btnCerrar" class="cerrar" aria-label="Cerrar">✕</button>
+                <img id="previa" class="previa" src="" alt="Imagen elegida">
+                <p class="subtitulo">Elegí la dificultad</p>
+                <div class="acciones">
+                    <button type="button" class="boton boton--dif" data-dif="facil">Fácil</button>
+                    <button type="button" class="boton boton--dif" data-dif="medio">Medio</button>
+                    <button type="button" class="boton boton--dif" data-dif="dificil">Difícil</button>
+                </div>
+                <button type="button" id="btnComenzar" class="boton" disabled>Comenzar</button>
+            </div>
         </div>
-
-        <button id="btnComenzar" class="boton">Comenzar</button>
     </main>
     <section id="juego">
         <p id="tiempo" class="oculto">00:00</p>
