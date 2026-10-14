@@ -56,11 +56,11 @@ let clickeable=true;
 
 let nivelActual = 1; 
 
-const filtrosPorNivel = {
-    1: "brillo",  
-    2: "grises",   
-    3: "negativo"  
-};
+const filtros = [
+    "brillo",  
+    "grises",   
+    "negativo" 
+];
 
 const tiemposPorNivel = {
     "facil": 25000,  
@@ -77,8 +77,12 @@ let height=450;
 canvas.width = width;  
 canvas.height = height;
 
-let filtroActual = "ninguno";
-const img= new Image();
+const img = new Image();
+const imgBase = document.createElement("canvas");
+const imgFiltro = document.createElement("canvas");
+imgBase.width = imgFiltro.width = width;
+imgBase.height = imgFiltro.height = height;
+let filtroNivel = null;
 const fichas=[];
 
 const bancoImagenes = [
@@ -89,9 +93,10 @@ const bancoImagenes = [
     'img/rio.svg',
     'img/ruina.svg'
 ];
-let imgUsadas=[];
 
+let imgUsadas=[];
 let imgElegida = null;
+let filtrosUsados=[];
 
 // Menú: una miniatura por cada imagen del banco (solo se muestran, la imagen se elige al azar)
 const galeria = document.getElementById("galeria");
@@ -163,11 +168,13 @@ botonesDif.forEach(boton => {
 btnComenzar.addEventListener("click", function() {
     cerrarPanel();
     menu.classList.add("oculto");
+    btnMenu.classList.remove("oculto");
     canvas.classList.remove("oculto");
     tiempoEl.classList.remove("oculto");
     imgUsadas=[];
+    filtrosUsados=[];
     aplicarDificultad(difElegida);
-    iniciarNivel(imgElegida);
+    iniciarNivel();
 });
 
 btnMenu.addEventListener("click", function() {
@@ -175,7 +182,12 @@ btnMenu.addEventListener("click", function() {
     menu.classList.remove("oculto");
     canvas.classList.add("oculto");
     tiempoEl.classList.add("oculto");
-    finNivel.classList.add("oculto");
+    msj.classList.add("oculto");
+    recordEl.classList.add("oculto");
+    btnSig.classList.add("oculto");
+    btnReintentar.classList.add("oculto");
+    btnMenu.classList.add("oculto");
+    btnAyuda.classList.add("oculto");
 });
 
 btnSig.addEventListener("click", function() {
@@ -193,7 +205,7 @@ btnAyuda.addEventListener("click",function(){
             if(resolver.length > 0){
                 resolver[0].ang = 0;
                 resolver[0].fijar();
-                dibujarJuego();
+                dibujarJuego(imgFiltro);
                 verificarVictoria();
             } 
         }
@@ -244,7 +256,7 @@ canvas.addEventListener('mousedown', function(event) {
                     ficha.ang = 0;
                 }
 
-                dibujarJuego();
+                dibujarJuego(imgFiltro);
                 verificarVictoria();
             }
         });
@@ -265,25 +277,38 @@ function aplicarDificultad(dificultad) {
     }
 }
 
-// Nivel 1: usa la imagen elegida en el menú. Siguientes niveles: una al azar entre las no usadas
-function iniciarNivel(elegida) {
-    finNivel.classList.add("oculto");
-    if (!elegida) {
-        const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta))
+function iniciarNivel() {
+    msj.classList.add("oculto");
+    recordEl.classList.add("oculto");
+    btnSig.classList.add("oculto");
+    btnReintentar.classList.add("oculto");
+    let elegida;
+    if (nivelActual === 1) {
+        elegida = imgElegida;     
+    } else {
+        const usables = bancoImagenes.filter(ruta => !imgUsadas.includes(ruta));
         const indice = Math.floor(Math.random() * usables.length);
         elegida = usables[indice];
     }
+
     img.onload = armarNivel;
+
+    const filtrosLibres = filtros.filter(f => !filtrosUsados.includes(f));
+    filtroNivel = filtrosLibres[Math.floor(Math.random() * filtrosLibres.length)];
+    filtrosUsados.push(filtroNivel);
 
     img.src = elegida;
     imgUsadas.push(elegida);
 }
 
 function armarNivel() {
-    finNivel.classList.add("oculto");
+    msj.classList.add("oculto");
+    recordEl.classList.add("oculto");
+    btnSig.classList.add("oculto");
+    btnReintentar.classList.add("oculto");
     btnReintentar.classList.add("oculto");
     iniciarTablero();
-    dibujarJuego();
+    dibujarJuego(imgFiltro);
     clickeable=true;
     btnAyuda.disabled = false
     btnAyuda.classList.remove("oculto");
@@ -316,8 +341,7 @@ function verificarVictoria() {
             `Tu tiempo: ${formatearTiempo(tiempoFinal)} · Récord: ${formatearTiempo(mejor)}` +
             (esRecord ? " · ¡Nuevo récord!" : "");
 
-        filtroActual = "ninguno";
-        dibujarJuego();
+        dibujarJuego(imgBase);
         btnAyuda.classList.add("oculto");
         if (nivelActual < 3) {
             msj.innerText = `¡Nivel ${nivelActual} completado! Prepárate para el siguiente nivel...`;
@@ -326,14 +350,22 @@ function verificarVictoria() {
             msj.innerText = `¡Felicidades! Has completado todos los niveles 🎉`;
             btnSig.classList.add("oculto");
         }
-        finNivel.classList.remove("oculto");
+        msj.classList.remove("oculto");
+        recordEl.classList.remove("oculto");
     }
 }
 
 function iniciarTablero(){
     fichas.length=0;
 
-    filtroActual = filtrosPorNivel[nivelActual];
+    imgBase.getContext("2d").clearRect(0, 0, width, height);
+    imgBase.getContext("2d").drawImage(img, 0, 0, width, height);
+
+    const cFiltro = imgFiltro.getContext("2d");
+    cFiltro.clearRect(0, 0, width, height);
+    cFiltro.drawImage(img, 0, 0, width, height);
+    const imgData = cFiltro.getImageData(0, 0, width, height);
+    cFiltro.putImageData(aplicarFiltroAImageData(imgData, filtroNivel), 0, 0);
 
     anchoFicha = width / columnas; 
     altoFicha = height / filas;
@@ -355,7 +387,7 @@ function iniciarTablero(){
     }
 }
 
-function dibujarJuego() {
+function dibujarJuego(imagen) {
     cleanImg();
     fichas.forEach(ficha => {
         ctx.save();
@@ -366,18 +398,12 @@ function dibujarJuego() {
         ctx.rotate(ficha.ang);           
 
         ctx.drawImage(
-            img, 
+            imagen, 
             ficha.x, ficha.y, ficha.w, ficha.h,   // RECORTE: Usamos x e y de la foto original
             -ficha.w / 2, -ficha.h / 2, ficha.w, ficha.h // PANTALLA: Centrado en el nuevo origen
         );
 
         ctx.restore();
-
-        if (filtroActual !== "ninguno") {
-            let imgDataFicha = ctx.getImageData(ficha.x, ficha.y, ficha.w, ficha.h);
-            let imgDataFiltrada = aplicarFiltroAImageData(imgDataFicha, filtroActual);
-            ctx.putImageData(imgDataFiltrada, ficha.x, ficha.y);
-        }
 
         if (ficha.fija && clickeable) {
             const grosor = 4;
@@ -506,6 +532,6 @@ function perderNivel() {
     recordEl.innerText = "";
     btnSig.classList.add("oculto");
     btnReintentar.classList.remove("oculto");
-    btnMenu.classList.remove("oculto");
-    finNivel.classList.remove("oculto");
+    msj.classList.remove("oculto");
+    recordEl.classList.remove("oculto");
 }
