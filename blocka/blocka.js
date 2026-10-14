@@ -71,8 +71,8 @@ const tiemposPorNivel = {
 // cargar imagen
 
 let ctx=canvas.getContext("2d");
-let width=500;
-let height=500;
+let width=450;
+let height=450;
 
 canvas.width = width;  
 canvas.height = height;
