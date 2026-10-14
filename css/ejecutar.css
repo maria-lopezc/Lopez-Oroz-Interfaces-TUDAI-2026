@@ -202,8 +202,8 @@ div.comentario img{
 }
 
 #areaJuego {
-    width: 100%;        /* mismo ancho que la imagen que reemplaza */
-    height: 780px;      /* ajustalo hasta que entren cronómetro, canvas y panel */
+    width: 100%;        
+    height: 650px;      
     border: 0;
     display: block;
 }
