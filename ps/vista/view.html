@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEG SOLITAIRE Los Simpsons</title>
+    <link rel="stylesheet" href="../vista/view.css">
+</head>
+<body>
+    <section id="menu">
+        <h1>PEG SOLITAIRE Los Simpsons</h1>
+        <h2>Seleccione una ficha</h2>
+            <div class="fichas">
+                <label for="ficha-homero">
+                    <input type="radio" id="ficha-homero" name="ficha" value="homero">
+                    <img src="../img/ficha_homero.svg" alt="Homero">
+                </label>
+                <label for="ficha-marge">
+                    <input type="radio" id="ficha-marge" name="ficha" value="marge">
+                    <img src="../img/ficha_marge.svg" alt="Marge">
+                </label>
+                <label for="ficha-lisa">
+                    <input type="radio" id="ficha-lisa" name="ficha" value="lisa">
+                    <img src="../img/ficha_lisa.svg" alt="Lisa">
+                </label>
+                <label for="ficha-bart">
+                    <input type="radio" id="ficha-bart" name="ficha" value="bart">
+                    <img src="../img/ficha_bart.svg" alt="Bart">
+                </label>
+            </div>
+    </section>
+    <section id="tablero">
+        <canvas id="tablero-canvas"></canvas>
+        <div id="tablero"></div>
+    </section>
+    <!--Cambiar index al controlador-->
+    <script type="module" src="../index.js"></script>
+</body>
+</html>

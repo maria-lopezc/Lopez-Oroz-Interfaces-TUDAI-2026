@@ -1,0 +1,35 @@
+        .fichas {
+            display: flex;
+            gap: 1rem;
+            border: 0;
+        }
+
+        .fichas label {
+            cursor: pointer;
+        }
+
+        .fichas input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        .fichas img {
+            display: block;
+            width: 5rem;
+            height: 5rem;
+            object-fit: contain;
+        }
+
+        .fichas input:checked + img {
+            outline: 3px solid currentColor;
+            outline-offset: 3px;
+        }
+
+        .fichas input:focus-visible + img {
+            outline: 3px solid currentColor;
+            outline-offset: 3px;
+        }
