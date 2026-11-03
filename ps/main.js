@@ -46,9 +46,6 @@ async function iniciar() {
     try {
         const imagenes = await cargarImagenes();
 
-        // Verificación temporal: tienen que aparecer las 5 imágenes.
-        console.log("Imágenes cargadas:", imagenes);
-
         const controlador = new Controlador(canvas, imagenes);
 
         const panelVista = new PanelVista();

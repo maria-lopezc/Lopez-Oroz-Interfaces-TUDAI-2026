@@ -4,7 +4,6 @@
     --rojo: #E8452B;           /* rojo del subtítulo */
     --tinta: #1b1209;          /* casi negro, para bordes y texto */
     --crema: #FFF6D6;          /* fondo de los paneles */
-    --alto-nav: 64px;          /* alto de la barra de navegación */
     --fuente: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
 }
 
@@ -21,39 +20,9 @@ body {
     background: #f7b0bd url("../img/background.png") center / cover fixed no-repeat;
 }
 
-/* ============ NAVEGACIÓN ============ */
-.nav {
-    height: var(--alto-nav);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background: var(--amarillo);
-    border-bottom: 4px solid var(--tinta);
-}
-
-.nav__marca {
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: var(--tinta);
-    text-decoration: none;
-}
-
-.nav__links { display: flex; gap: 1.5rem; }
-
-.nav__links a {
-    color: var(--tinta);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.nav__links a:hover { text-decoration: underline; }
-
-/* ============ PANTALLA DEL JUEGO ============ */
-/* Tres columnas: [panel izquierdo] [tablero] [panel derecho].
-   Alto = ventana menos la barra, así el canvas no genera scroll. */
+/* Tres columnas: [panel izquierdo] [tablero] [panel derecho]. */
 .juego {
-    height: calc(100vh - var(--alto-nav));
+    height: calc(100vh);
     min-height: 640px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -88,7 +57,7 @@ body {
    La resolución interna sigue siendo 900x900; el navegador solo lo escala. */
 #canvas {
     display: block;
-    height: min(calc(100vh - var(--alto-nav) - 3rem), 900px);
+    height: min(calc(100vh - 3rem), 900px);
     aspect-ratio: 1 / 1;
     border-radius: 14px;
     border: 4px solid var(--tinta);
@@ -135,7 +104,6 @@ body {
 
 .fichas label:hover { transform: scale(1.05); background: rgba(255, 217, 15, .35); }
 
-/* El radio real se oculta pero sigue siendo accesible con teclado. */
 .fichas input {
     position: absolute;
     width: 1px;
