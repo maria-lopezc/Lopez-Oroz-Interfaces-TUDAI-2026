@@ -1,20 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peg Solitaire - Prueba</title>
+    <title>Peg Solitaire - Los Simpsons</title>
+    <link rel="stylesheet" href="vista/view.css">
 </head>
-
 <body>
+    <main>
+        <!-- ============ PANTALLA DEL JUEGO ============
+             Ocupa exactamente el alto de la ventana: el canvas nunca hace scroll. -->
+        <section id="juego" class="juego">
 
-    <h1>Peg Solitaire</h1>
+            <!-- Columna izquierda: título y selección de ficha -->
+            <aside class="columna columna--izq">
+                <img class="titulo" src="img/titulo.svg" alt="Peg Solitaire - Los Simpsons">
 
-    <canvas id="canvas" width="600" height="600"></canvas>
+                <div class="panel">
+                    <h2 class="panel__titulo">Elegí tu ficha</h2>
 
-    <script type="module" src="./js/main.js"></script>
+                    <!-- Selector de personaje: un radio por ficha. El valor lo lee el controlador. -->
+                    <div class="fichas" role="radiogroup" aria-label="Personaje de las fichas">
+                        <label for="ficha-homero">
+                            <input type="radio" id="ficha-homero" name="ficha" value="homero" checked>
+                            <img src="img/homero.svg" alt="Homero">
+                        </label>
+                        <label for="ficha-marge">
+                            <input type="radio" id="ficha-marge" name="ficha" value="marge">
+                            <img src="img/marge.svg" alt="Marge">
+                        </label>
+                        <label for="ficha-lisa">
+                            <input type="radio" id="ficha-lisa" name="ficha" value="lisa">
+                            <img src="img/lisa.svg" alt="Lisa">
+                        </label>
+                        <label for="ficha-bart">
+                            <input type="radio" id="ficha-bart" name="ficha" value="bart">
+                            <img src="img/bart.svg" alt="Bart">
+                        </label>
+                    </div>
+                </div>
+            </aside>
 
+            <!-- Centro: el tablero. El id "canvas" es el que busca main.js.
+                 900x900 es la resolución interna; el tamaño en pantalla lo define el CSS. -->
+            <div class="tablero">
+                <canvas id="canvas" width="900" height="900"> </canvas>
+            </div>
+
+            <!-- Columna derecha: estado de la partida y acciones -->
+            <aside class="columna columna--der">
+                <div class="panel">
+                    <div class="dato">
+                        <span class="dato__etiqueta">Tiempo</span>
+                        <span class="dato__valor" id="tiempo">00:00</span>
+                    </div>
+                    <div class="dato">
+                        <span class="dato__etiqueta">Movimientos</span>
+                        <span class="dato__valor" id="movimientos">0</span>
+                    </div>
+
+                    <!-- Mensaje de fin de partida (ganaste, sin movimientos, tiempo agotado).
+                         Está vacío mientras se juega. -->
+                    <p class="mensaje hidden" id="mensaje" role="status" aria-live="polite"></p>
+                </div>
+
+                <div class="acciones">
+                    <button type="button" class="boton boton--principal" id="btn-reiniciar">Reiniciar</button>
+                </div>
+            </aside>
+
+        </section>
+
+    <script type="module" src="main.js"></script>
 </body>
-
 </html>

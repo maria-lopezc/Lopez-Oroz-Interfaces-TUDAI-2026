@@ -34,6 +34,11 @@ export class Controlador {
         this.redibujar();
     }
 
+    // Cambia el personaje actual y redibuja la vista.
+    cambiarPersonaje(personaje) {
+        this.vista.personaje = personaje;
+        this.redibujar();
+    }
 
     // Detecta la ficha seleccionada y calcula sus destinos posibles.
     onMouseDown(e) {

@@ -8,13 +8,16 @@ export class TableroVista {
         this.tablero = tablero;
         this.imagenes = imagenes;
 
+        //personaje actual
+        this.personaje = "homero";
+
         // Configuración de las dimensiones del tablero.
-        this.tamCelda = 65;
+        this.tamCelda = 105.7;
         this.offsetX = 80;
         this.offsetY = 80;
 
         // Radio de las fichas.
-        this.radioFicha = 22;
+        this.radioFicha = 43;
     }
 
     // Traduce la posición del mouse a coordenadas internas del canvas.
@@ -62,25 +65,7 @@ export class TableroVista {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Dibujamos el fondo.
-        ctx.fillStyle = "#202735";
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Dibujamos las posiciones válidas del tablero.
-        for (let fila = 0; fila < 7; fila++) {
-            for (let col = 0; col < 7; col++) {
-
-                if (!this.tablero.esCeldaValida(fila, col)) {
-                    continue;
-                }
-
-                const { x, y } = this.aPixeles(fila, col);
-
-                ctx.beginPath();
-                ctx.arc(x, y, this.radioFicha + 5, 0, Math.PI * 2);
-                ctx.fillStyle = "#48566D";
-                ctx.fill();
-            }
-        }
+        ctx.drawImage(this.imagenes.tablero, 0, 0, this.canvas.width, this.canvas.height);
 
         // Dibujamos los destinos posibles de la ficha seleccionada.
         if (arrastre && arrastre.destinos) {
@@ -97,7 +82,7 @@ export class TableroVista {
 
             const { x, y } = this.aPixeles(ficha.fila, ficha.col);
 
-            this.dibujarFicha(x, y, ficha.tipo);
+            this.dibujarFicha(x, y, this.personaje);
         }
 
         // Dibujamos la ficha que se está arrastrando.
@@ -106,25 +91,9 @@ export class TableroVista {
             this.dibujarFicha(
                 arrastre.x - arrastre.offsetX,
                 arrastre.y - arrastre.offsetY,
-                arrastre.ficha.tipo
+                this.personaje
             );
         }
-
-        // Mostramos el mensaje del juego.
-        if (mensaje) {
-
-            ctx.fillStyle = "#FFFFFF";
-            ctx.font = "bold 22px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText(mensaje, this.canvas.width / 2, 40);
-        }
-        // Dibujamos el reloj y la cantidad de movimientos.
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = "bold 20px Arial";
-        ctx.textAlign = "left";
-
-        ctx.fillText("Tiempo: " + reloj, 20, 35);
-        ctx.fillText("Movimientos: " + movimientos, 20, 65);
     }
 
     // Dibuja una ficha circular en el canvas.
@@ -132,15 +101,11 @@ export class TableroVista {
 
         const ctx = this.ctx;
 
-        ctx.beginPath();
-        ctx.arc(x, y, this.radioFicha, 0, Math.PI * 2);
+        const img = this.imagenes[tipo];
 
-        ctx.fillStyle = tipo === "roja" ? "#E45B5B" : "#3978D6";
-        ctx.fill();
+        const tam = this.radioFicha * 2;
 
-        ctx.strokeStyle = "#FFFFFF";
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        ctx.drawImage(img, x - this.radioFicha, y - this.radioFicha, tam, tam);
     }
 
 
