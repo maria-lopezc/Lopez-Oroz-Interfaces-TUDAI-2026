@@ -33,6 +33,7 @@ export class Controlador {
 
         // Registramos los eventos del mouse.
         canvas.addEventListener("mousedown", this.alBajar);
+        canvas.addEventListener("mouseleave", this.alSoltar);
         window.addEventListener("mousemove", this.alMover);
         window.addEventListener("mouseup", this.alSoltar);
 
