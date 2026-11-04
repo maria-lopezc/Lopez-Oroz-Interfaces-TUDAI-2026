@@ -9,10 +9,11 @@ export class PanelVista {
     }
 
     // Escribe el tiempo, los movimientos y el mensaje en el panel.
-    actualizar({ reloj, movimientos, mensaje }) {
+    actualizar({ reloj, movimientos, mensaje, tipo }) {
         this.tiempo.innerHTML = reloj;
         this.movimientos.innerHTML = movimientos;
         if (mensaje) {
+            if (tipo) this.mensaje.dataset.tipo = tipo;
             this.mensaje.innerHTML = mensaje;
             this.mensaje.classList.remove("hidden");
         } else {

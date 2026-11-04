@@ -9,65 +9,73 @@
 </head>
 
 <body>
-    <section id="juego" class="juego">
+    <section id="inicio" class="inicio">
+        <img class="titulo" src="img/titulo.svg" alt="Peg Solitaire - Los Simpsons">
 
-        <!-- Columna izquierda: título y selección de ficha -->
+        <div class="panel">
+            <h2 class="panel__titulo">Elegí tu ficha</h2>
+
+            <div class="fichas" role="radiogroup" aria-label="Personaje de las fichas">
+                <label for="ficha-homero">
+                    <input type="radio" id="ficha-homero" name="ficha" value="homero" checked>
+                    <img src="img/homero.svg" alt="Homero">
+                </label>
+                <label for="ficha-marge">
+                    <input type="radio" id="ficha-marge" name="ficha" value="marge">
+                    <img src="img/marge.svg" alt="Marge">
+                </label>
+                <label for="ficha-lisa">
+                    <input type="radio" id="ficha-lisa" name="ficha" value="lisa">
+                    <img src="img/lisa.svg" alt="Lisa">
+                </label>
+                <label for="ficha-bart">
+                    <input type="radio" id="ficha-bart" name="ficha" value="bart">
+                    <img src="img/bart.svg" alt="Bart">
+                </label>
+            </div>
+        </div>
+        <!-- Para facilitar testeo-->
+        <div  class="testeo">
+            <input type="checkbox" id="demo" name="demo" value="yes">
+            <label for="demo">Modo testeo (Para victorias y derrotas rápidas)</label>
+        </div>
+        
+        <button id="btn-jugar">
+            <img src="img/jugar.svg" alt="Jugar">
+        </button>
+    </section>
+    <section id="juego" class="juego hidden">
         <aside class="columna columna--izq">
             <img class="titulo" src="img/titulo.svg" alt="Peg Solitaire - Los Simpsons">
-
             <div class="panel">
-                <h2 class="panel__titulo">Elegí tu ficha</h2>
-
-                <!-- Selector de personaje: un radio por ficha. El valor lo lee el controlador. -->
-                <div class="fichas" role="radiogroup" aria-label="Personaje de las fichas">
-                    <label for="ficha-homero">
-                        <input type="radio" id="ficha-homero" name="ficha" value="homero" checked>
-                        <img src="img/homero.svg" alt="Homero">
-                    </label>
-                    <label for="ficha-marge">
-                        <input type="radio" id="ficha-marge" name="ficha" value="marge">
-                        <img src="img/marge.svg" alt="Marge">
-                    </label>
-                    <label for="ficha-lisa">
-                        <input type="radio" id="ficha-lisa" name="ficha" value="lisa">
-                        <img src="img/lisa.svg" alt="Lisa">
-                    </label>
-                    <label for="ficha-bart">
-                        <input type="radio" id="ficha-bart" name="ficha" value="bart">
-                        <img src="img/bart.svg" alt="Bart">
-                    </label>
-                </div>
+                <h2 class="panel__titulo">Ficha seleccionada</h2>
+                <img id="ficha-elegida" src="" alt="Ficha seleccionada">
             </div>
         </aside>
 
-        <!-- Centro: el tablero. El id "canvas" es el que busca main.js.
-                 900x900 es la resolución interna; el tamaño en pantalla lo define el CSS. -->
         <div class="tablero">
             <canvas id="canvas" width="900" height="900"> </canvas>
         </div>
 
-        <!-- Columna derecha: estado de la partida y acciones -->
         <aside class="columna columna--der">
             <div class="panel">
                 <div class="dato">
                     <span class="dato__etiqueta">Tiempo</span>
-                    <span class="dato__valor" id="tiempo">00:00</span>
+                    <span class="dato__valor" id="tiempo">03:00</span>
                 </div>
                 <div class="dato">
                     <span class="dato__etiqueta">Movimientos</span>
                     <span class="dato__valor" id="movimientos">0</span>
                 </div>
 
-                <!-- Mensaje de fin de partida (ganaste, sin movimientos, tiempo agotado).
-                         Está vacío mientras se juega. -->
                 <p class="mensaje hidden" id="mensaje" role="status" aria-live="polite"></p>
             </div>
 
             <div class="acciones">
                 <button type="button" class="boton boton--principal" id="btn-reiniciar">Reiniciar</button>
+                <button type="button" class="boton boton--principal" id="btn-menu">Menú</button>
             </div>
         </aside>
-
     </section>
 
     <script type="module" src="main.js"></script>

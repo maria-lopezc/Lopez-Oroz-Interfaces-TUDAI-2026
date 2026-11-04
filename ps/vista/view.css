@@ -20,6 +20,44 @@ body {
     background: #f7b0bd url("../img/background.png") center / cover fixed no-repeat;
 }
 
+/* ============ PANTALLA DE INICIO (MENÚ) ============ */
+.inicio {
+    height: 100vh;
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 1.5rem 2rem;
+}
+
+.inicio .titulo { max-width: 380px; }
+.inicio .panel { max-width: 540px; }
+
+/* En el menú, las cuatro fichas van en una sola fila. */
+.inicio .fichas { grid-template-columns: repeat(4, 1fr); }
+
+/* Botón Jugar: solo se ve la imagen (jugar.svg). */
+#btn-jugar {
+    width: 220px;
+    padding: 0;
+    background: none;
+    border: none;
+    line-height: 0;
+    cursor: pointer;
+    transition: transform .15s;
+}
+#btn-jugar img { display: block; width: 100%; height: auto; }
+#btn-jugar:hover { transform: scale(1.08); }
+
+.testeo{
+    background-color: #ffffff8e; 
+    padding: 10px; 
+    border-radius: 5px; 
+    font-size: 18px; 
+    border: 1px solid #000000;
+}
 /* Tres columnas: [panel izquierdo] [tablero] [panel derecho]. */
 .juego {
     height: calc(100vh);
@@ -48,6 +86,14 @@ body {
     max-width: 300px;
     height: auto;
     filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .25));
+}
+
+#ficha-elegida {
+    display: block;
+    margin: 0 auto;
+    width: 9rem;
+    max-width: 100%;
+    height: auto;
 }
 
 /* ============ TABLERO (CANVAS) ============ */
@@ -158,6 +204,10 @@ body {
     font-weight: 700;
     text-align: center;
 }
+
+.mensaje[data-tipo="perfecto"] { background: var(--amarillo); color: var(--tinta); }
+.mensaje[data-tipo="victoria"] { background: rgb(92, 240, 55); color: var(--tinta); }
+.mensaje[data-tipo="derrota"] { background: var(--rojo); color: #fff; }
 
 .hidden { display: none; }
 

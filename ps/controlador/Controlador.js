@@ -1,5 +1,6 @@
 import { Tablero } from "../modelo/Tablero.js";
 import { TableroVista } from "../vista/TableroVista.js";
+import { MODOS } from "../modelo/Modos.js";
 
 export class Controlador {
 
@@ -9,12 +10,16 @@ export class Controlador {
         this.tablero = new Tablero();
         this.vista = new TableroVista(canvas, this.tablero, imagenes);
 
+        this.modo="normal";  // Modo de juego por defecto.
+
         this.arrastre = null;
+        this.tipoMensaje = null;
         this.mensaje = null;
         // Información necesaria para la animación de los hints.
         this.inicio = null;
         this.raf = null;
         // Estado y tiempo de la partida.
+        this.limiteSegundos=180;
         this.tiempoInicio = null;
         this.tiempoTranscurrido = 0;
         this.temporizador = null;
@@ -40,8 +45,16 @@ export class Controlador {
         this.redibujar();
     }
 
+    // Cambia el modo de juego y reinicia la partida.
+    cambiarModo(modo) {
+        this.modo = modo;
+        this.limiteSegundos = MODOS[modo].limite;
+        this.reiniciar(MODOS[modo].fichas);
+    }
+
     // Detecta la ficha seleccionada y calcula sus destinos posibles.
     onMouseDown(e) {
+        if(this.juegoTerminado) return;  
 
         const p = this.vista.posicionMouse(e);
 
@@ -76,7 +89,6 @@ export class Controlador {
 
     // Actualiza la posición de la ficha mientras se arrastra.
     onMouseMove(e) {
-
         if (!this.arrastre) return;
 
         const p = this.vista.posicionMouse(e);
@@ -88,7 +100,6 @@ export class Controlador {
 
     // Finaliza el arrastre e intenta realizar el movimiento.
     onMouseUp() {
-
         if (!this.arrastre) return;
 
         const { ficha, x, y, offsetX, offsetY } = this.arrastre;
@@ -130,20 +141,22 @@ export class Controlador {
 
     // Comprueba si el jugador ganó o si no quedan movimientos posibles.
     verificarFin() {
-
-        if (this.tablero.gano()) {
-
+        if (this.tablero.ganoEnElCentro()) {
+            this.mensaje = "¡Victoria perfecta!";
+            this.tipoMensaje = "perfecto";
+            this.juegoTerminado = true;
+        } else if (this.tablero.gano()) {
             this.mensaje = "¡Ganaste!";
+            this.tipoMensaje = "victoria";
             this.juegoTerminado = true;
 
         } else if (!this.tablero.hayMovimientosPosibles()) {
-
             this.mensaje = "No hay más movimientos";
+            this.tipoMensaje = "derrota";
             this.juegoTerminado = true;
-
         } else {
-
             this.mensaje = null;
+            this.tipoMensaje = null;
         }
 
         // Si terminó la partida, detenemos el reloj.
@@ -168,6 +181,9 @@ export class Controlador {
                 (Date.now() - this.tiempoInicio) / 1000
             );
 
+            if (this.obtenerTiempoRestante() <= 0) {
+                this.terminarPartidaPorTiempo();
+            }
             this.redibujar();
 
         }, 1000);
@@ -188,7 +204,7 @@ export class Controlador {
     // Convierte los segundos a formato minutos:segundos.
     formatearTiempo() {
 
-        const tiempo = this.obtenerTiempo();
+        const tiempo = this.obtenerTiempoRestante();
 
         const minutos = Math.floor(tiempo / 60);
         const segundos = tiempo % 60;
@@ -198,11 +214,30 @@ export class Controlador {
 
     // Detiene el reloj cuando finaliza la partida.
     detenerReloj() {
-
+        this.tiempoTranscurrido = this.obtenerTiempo();
+        this.tiempoInicio = null;
         if (this.temporizador !== null) {
             clearInterval(this.temporizador);
             this.temporizador = null;
         }
+    }
+
+    // Devuelvo el tiempo restante en segundos antes de que se acabe el límite de tiempo.
+    obtenerTiempoRestante() {
+        const tiempoRestante = this.limiteSegundos - this.obtenerTiempo();
+        return Math.max(tiempoRestante, 0);
+    }
+
+    // Finaliza la partida cuando se acaba el tiempo.
+    terminarPartidaPorTiempo() {
+        this.arrastre = null;
+        cancelAnimationFrame(this.raf)
+        this.raf = null;
+        this.mensaje = "Se acabó el tiempo";
+        this.tipoMensaje = "derrota";
+        this.juegoTerminado = true;
+        this.detenerReloj();
+        this.redibujar();
     }
 
 
@@ -245,11 +280,12 @@ export class Controlador {
         }
 
         // Reiniciamos el modelo.
-        this.tablero.reiniciar();
+        this.tablero.reiniciar(MODOS[this.modo].fichas);
 
         // Restablecemos el estado del controlador.
         this.arrastre = null;
         this.mensaje = null;
+        this.tipoMensaje = null;
         this.inicio = null;
         this.tiempoInicio = null;
         this.tiempoTranscurrido = 0;

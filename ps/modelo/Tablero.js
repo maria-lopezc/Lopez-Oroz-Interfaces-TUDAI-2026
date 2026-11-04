@@ -11,7 +11,12 @@ export class Tablero {
 
     // Inicializa las 33 posiciones válidas del tablero,
     // dejando vacía la posición central.
-    inicializar() {
+    inicializar(posiciones = null) {
+        //Si hay posiciones (modo demo)
+        if(posiciones) {
+            this.fichas = posiciones.map(pos => new Ficha(pos.fila, pos.col));
+            return;
+        }
 
         this.fichas = [];
 
@@ -144,16 +149,19 @@ export class Tablero {
         );
     }
 
+    // Comprueba si hay juego perfecto
+    ganoEnElCentro() {
+        return this.gano() && this.fichas[0].fila === 3 && this.fichas[0].col === 3;
+    }
+
     // Comprueba si el jugador ganó dejando una sola ficha.
     gano() {
-
         return this.fichas.length === 1;
     }
 
     // Reinicia el tablero a su configuración inicial.
-    reiniciar() {
-
-        this.inicializar();
+    reiniciar(posiciones = null) {
+        this.inicializar(posiciones);
     }
 
 }
