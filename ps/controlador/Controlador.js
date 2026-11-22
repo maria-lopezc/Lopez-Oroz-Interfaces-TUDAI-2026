@@ -66,6 +66,7 @@ export class Controlador {
         if (!ficha) return;
 
         const centro = this.vista.aPixeles(ficha.fila, ficha.col);
+        const destinos = this.tablero.obtenerMovimientosPosibles(ficha);
 
         this.arrastre = {
             ficha,
@@ -75,7 +76,8 @@ export class Controlador {
             offsetY: p.y - centro.y,
 
             // Obtenemos los destinos válidos de la ficha seleccionada.
-            destinos: this.tablero.obtenerMovimientosPosibles(ficha)
+            destinos,
+            sinMovimientos: destinos.length === 0
         };
 
         // Guardamos el instante inicial de la animación.
@@ -304,7 +306,8 @@ export class Controlador {
             mensaje: this.mensaje,
             tiempo: this.obtenerTiempo(),
             reloj: this.formatearTiempo(),
-            movimientos: this.cantidadMovimientos
+            movimientos: this.cantidadMovimientos,
+            sinMovimientosTotales: this.juegoTerminado && !this.tablero.hayMovimientosPosibles()
         });
     }
 

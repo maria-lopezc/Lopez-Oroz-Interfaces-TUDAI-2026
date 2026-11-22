@@ -58,7 +58,8 @@ export class TableroVista {
             mensaje,
             tiempo = 0,
             reloj = "00:00",
-            movimientos = 0
+            movimientos = 0,
+            sinMovimientosTotales = false
         } = estado;
 
         // Limpiamos el canvas.
@@ -71,6 +72,13 @@ export class TableroVista {
         if (arrastre && arrastre.destinos) {
             this.dibujarHints(arrastre.destinos, tiempo);
         }
+
+
+        if (arrastre && arrastre.sinMovimientos) {
+            this.dibujarSinMovimientos(arrastre.ficha);
+        }
+
+
 
         // Dibujamos las fichas que están en el tablero.
         for (const ficha of this.tablero.fichas) {
@@ -107,6 +115,19 @@ export class TableroVista {
 
         ctx.drawImage(img, x - this.radioFicha, y - this.radioFicha, tam, tam);
     }
+
+    
+    dibujarSinMovimientos(ficha) {
+        const ctx = this.ctx;
+        const { x, y } = this.aPixeles(ficha.fila, ficha.col);
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255, 0, 0, 0.9)";
+        ctx.lineWidth = 5;
+        ctx.arc(x, y, this.radioFicha + 12, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
 
 
     // Dibuja los destinos posibles con una animación de pulsación.
