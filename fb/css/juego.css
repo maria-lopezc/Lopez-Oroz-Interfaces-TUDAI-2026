@@ -1,0 +1,353 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #14232b;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Jersey 25", system-ui, sans-serif;
+    color: #fff;
+}
+
+.juego {
+    position: relative;
+    flex: none;
+    width: 900px;
+    height: 600px;
+    overflow: hidden;
+    background: #8d898e;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+}
+
+/* ========== PARALLAX ========== */
+.capa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2134px;
+    height: 600px;
+    background-repeat: repeat-x;
+    background-size: 1066.67px 600px;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.capa--1 { z-index: 0; background-image: url("../assets/background/capa1.png"); }
+.capa--2 { z-index: 1; background-image: url("../assets/background/capa2.png"); }
+.capa--3 { z-index: 2; background-image: url("../assets/background/capa3.png"); }
+.capa--4 { z-index: 7; background-image: url("../assets/background/capa4.png"); }
+
+/* ========== TORTUGA ========== */
+.tortuga {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 6;
+    width: 62px;
+    height: 30px;
+    will-change: transform;
+}
+
+.tortuga--invulnerable {
+    animation: parpadeo 0.16s steps(2, jump-none) infinite;
+}
+
+.tortuga__sprite {
+    position: absolute;
+    top: -36px;
+    left: -16px;
+    width: 96px;
+    height: 96px;
+    background: url("../assets/tortuga/Walk.png") 0 0 / 576px 96px no-repeat;
+    image-rendering: pixelated;
+    animation: nadar 0.75s steps(6) infinite;
+}
+
+.tortuga--nadando {
+    background-image: url("../assets/tortuga/Speed.png");
+    animation: impulso 0.3s steps(6) 1;
+}
+
+.tortuga--golpe {
+    background-image: url("../assets/tortuga/Hurt.png");
+    background-size: 192px 96px;
+    animation: sprite-2 0.18s steps(2) 4;
+}
+
+.tortuga--choque {
+    background-image: url("../assets/tortuga/Death.png");
+    animation:
+        morir 1.2s steps(6, jump-none) 1 forwards,
+        hundirse 1.5s cubic-bezier(0.45, 0, 0.9, 0.6) 1 forwards;
+}
+
+@keyframes nadar {
+    to { background-position-x: -576px; }
+}
+
+@keyframes impulso {
+    to { background-position-x: -576px; }
+}
+
+@keyframes morir {
+    to { background-position-x: -480px; }
+}
+
+@keyframes hundirse {
+    to { translate: 0 var(--caida, 0); }
+}
+
+@keyframes sprite-2 {
+    to { background-position-x: -192px; }
+}
+
+@keyframes parpadeo {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
+}
+
+/* ========== TUBOS ========== */
+.tubo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    will-change: transform;
+}
+
+.tubo::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: url("../assets/tubo/pipe_body_x4.png") center top / 73.6px 12.8px repeat-y;
+    image-rendering: pixelated;
+}
+
+.tubo--superior::before {
+    top: 0;
+    bottom: 20px;
+}
+
+.tubo--inferior::before {
+    top: 20px;
+    bottom: 0;
+}
+
+.tubo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 41.6px;
+    background: url("../assets/tubo/pipe_cap_x4.png") center / 100% 100% no-repeat;
+    image-rendering: pixelated;
+}
+
+.tubo--superior::after {
+    bottom: 0;
+    transform: scaleY(-1);
+}
+
+.tubo--inferior::after { top: 0; }
+
+.tubo--golpeado {
+    animation: tubo-golpe 0.4s ease-out;
+}
+
+@keyframes tubo-golpe {
+    0% { translate: 0 0; filter: brightness(2.2); }
+    25% { translate: 7px 0; }
+    50% { translate: -6px 0; filter: brightness(1.4); }
+    75% { translate: 3px 0; }
+    100% { translate: 0 0; filter: brightness(1); }
+}
+
+/* ========== MONEDAS Y PULPOS ========== */
+.objeto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    will-change: transform;
+}
+
+.objeto__sprite {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+
+.objeto--moneda .objeto__sprite {
+    background-image: url("../assets/coin-sheet.png");
+    background-size: 400px 40px;
+    animation: moneda 0.8s steps(10) infinite;
+}
+
+.objeto--pulpo .objeto__sprite {
+    background-image: url("../assets/pulpo.png");
+    background-size: 312px 52px;
+    image-rendering: pixelated;
+    animation: pulpo 0.8s steps(6) infinite;
+}
+
+@keyframes moneda {
+    to { background-position-x: -400px; }
+}
+
+@keyframes pulpo {
+    to { background-position-x: -312px; }
+}
+
+.juego--terminado .objeto__sprite {
+    animation-play-state: paused;
+}
+
+/* ========== AVISOS ========== */
+.aviso {
+    position: absolute;
+    z-index: 8;
+    font-size: 30px;
+    line-height: 1;
+    text-shadow: 2px 2px 0 #14232b;
+    pointer-events: none;
+    animation: aviso 0.8s ease-out forwards;
+}
+
+.aviso--suma { color: #ffe066; }
+.aviso--resta { color: #ff7b7b; }
+
+@keyframes aviso {
+    from { opacity: 1; translate: 0 0; }
+    to { opacity: 0; translate: 0 -46px; }
+}
+
+/* ========== INTERFAZ ========== */
+.hud {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    left: 16px;
+    z-index: 9;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.hud__dato {
+    padding: 3px 14px 5px;
+    border-radius: 8px;
+    background: rgb(20 35 43 / 0.78);
+    font-size: 28px;
+    line-height: 1;
+}
+
+.pantalla {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgb(20 35 43 / 0.72);
+    cursor: default;
+}
+
+.pantalla[hidden] {
+    display: none;
+}
+
+.pantalla__titulo {
+    font-size: 68px;
+    font-weight: 400;
+    line-height: 1;
+    color: #ffe066;
+    text-shadow: 3px 3px 0 #14232b;
+}
+
+.pantalla__mensaje {
+    min-height: 28px;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.pantalla__ayuda {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.pantalla__ayuda li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 32px;
+}
+
+kbd {
+    padding: 2px 8px 4px;
+    border-radius: 5px;
+    background: #fff;
+    color: #14232b;
+    font: inherit;
+}
+
+.icono {
+    display: inline-block;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+}
+
+.icono--moneda {
+    background-image: url("../assets/coin-sheet.png");
+    background-size: 320px 32px;
+}
+
+.icono--pulpo {
+    background-image: url("../assets/pulpo.png");
+    background-size: 192px 32px;
+    image-rendering: pixelated;
+}
+
+.pantalla__boton {
+    margin-top: 6px;
+    padding: 7px 40px 10px;
+    border: 0;
+    border-radius: 8px;
+    background: #ffe066;
+    color: #14232b;
+    font: inherit;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.12s, background-color 0.12s;
+}
+
+.pantalla__boton:hover {
+    background: #fff0a8;
+    transform: scale(1.05);
+}
+
+.pantalla__boton:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+}

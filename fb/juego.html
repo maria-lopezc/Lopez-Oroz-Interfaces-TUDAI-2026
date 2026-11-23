@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tortuga Marina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/juego.css">
+</head>
+<body>
+    <main id="juego" class="juego" aria-label="Juego Tortuga Marina">
+        <div class="capa capa--1"></div>
+        <div class="capa capa--2"></div>
+        <div class="capa capa--3"></div>
+
+        <div id="tortuga" class="tortuga">
+            <div id="tortuga-sprite" class="tortuga__sprite"></div>
+        </div>
+
+        <div class="capa capa--4"></div>
+
+        <div class="hud">
+            <p id="vidas" class="hud__dato"></p>
+            <p id="puntaje" class="hud__dato"></p>
+        </div>
+
+        <section id="pantalla" class="pantalla">
+            <h1 id="pantalla-titulo" class="pantalla__titulo">Tortuga Marina</h1>
+            <p id="mensaje-final" class="pantalla__mensaje"></p>
+            <ul class="pantalla__ayuda">
+                <li><kbd>Espacio</kbd> o clic: nadar hacia arriba</li>
+                <li><span class="icono icono--moneda"></span> Moneda: +1 vida</li>
+                <li><span class="icono icono--pulpo"></span> Pulpo: -1 vida</li>
+                <li>Chocar un tubo o el fondo: -1 vida</li>
+                <li>Cada tubo superado: +100 puntos. ¡Ganás con 2000!</li>
+            </ul>
+            <button id="boton-jugar" class="pantalla__boton" type="button">Jugar</button>
+        </section>
+    </main>
+
+    <script src="js/juego.js"></script>
+</body>
+</html>

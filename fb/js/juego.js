@@ -3,94 +3,264 @@ const ALTO_JUEGO = 600;
 
 const GRAVEDAD = 1600; // píxeles por segundo al cuadrado
 const IMPULSO = 520;   // píxeles por segundo
-const VELOCIDAD_TUBOS = 240; // píxeles por segundo
-const ANCHO_TUBO = 80;
-const HUECO_INICIAL = 230;
-const HUECO_MINIMO = 130;
-const MARGEN_VERTICAL = 70;
-const PUNTAJE_OBJETIVO = 10;
+const VELOCIDAD_MUNDO = 240; // píxeles por segundo
 
-let distanciaProximoTubo = 280;
+const ANCHO_TUBO = 80;
+const HUECO_INICIAL = 260;
+const HUECO_MINIMO = 165;
+const MARGEN_VERTICAL = 70;
+const VARIACION_MAXIMA_HUECO = 140;
+const VELOCIDAD_VERTICAL_COMODA = 190;
+
+const SEPARACION_INICIAL = { minima: 380, maxima: 520 };
+const SEPARACION_FINAL = { minima: 320, maxima: 410 };
+
+const PUNTOS_POR_TUBO = 100;
+const PUNTAJE_OBJETIVO = 2000;
+const VIDAS_INICIALES = 10;
+const VIDAS_MAXIMAS = 15;
+const DANIO = 1;
+const CURACION_MONEDA = 1;
+const TIEMPO_INVULNERABLE = 1.2; // segundos
+const DEMORA_PANTALLA_FINAL = 1700;
+
+const TAMANOS_OBJETO = { moneda: 40, pulpo: 52 };
+const AMPLITUD_FLOTE_PULPO = 14; // píxeles
+const PERIODO_FLOTE_PULPO = 2.6; // segundos
+
+const ANCHO_FONDO = 1066.67;
+const CAPAS_PARALLAX = [
+    { elemento: document.querySelector(".capa--1"), factor: 0.12 },
+    { elemento: document.querySelector(".capa--2"), factor: 0.35 },
+    { elemento: document.querySelector(".capa--3"), factor: 1 },
+    { elemento: document.querySelector(".capa--4"), factor: 1.35 },
+];
+
+let distanciaProximoTubo = 0;
 let proximoIdTubo = 1;
 let proximoIdObjeto = 1;
 let tipoProximoObjeto = "moneda";
-const TAMANO_OBJETO = 32;
-
+let centroHuecoAnterior = ALTO_JUEGO / 2;
+let separacionAnterior = SEPARACION_INICIAL.maxima;
+let temporizadorFinal = null;
 
 const juego = {
     estado: "listo",
-    resultado: null, // "listo", "jugando" o "terminado"
+    resultado: null,
     tiempo: 0,
+    distancia: 0,
     puntaje: 0,
-    vidas: 3,
+    vidas: VIDAS_INICIALES,
+    tubosCreados: 0,
+    invulnerableHasta: 0,
 
-
-    pajaro: {
+    tortuga: {
         x: 180,
         y: 260,
-        ancho: 48,
-        alto: 40,
+        ancho: 62,
+        alto: 30,
         velocidadY: 0,
-    },
-
-    efectos: {
-        turboHasta: 0,
     },
 
     tubos: [],
     objetos: [],
 };
 
-// Aplica un impulso hacia arriba al pájaro.
-function aplicarImpulso() {
-  if (juego.estado === "terminado") return;
+const contenedorJuego = document.querySelector("#juego");
+const elementoTortuga = document.querySelector("#tortuga");
+const elementoSprite = document.querySelector("#tortuga-sprite");
+const elementoVidas = document.querySelector("#vidas");
+const elementoPuntaje = document.querySelector("#puntaje");
+const elementoPantalla = document.querySelector("#pantalla");
+const elementoTitulo = document.querySelector("#pantalla-titulo");
+const elementoMensajeFinal = document.querySelector("#mensaje-final");
+const botonJugar = document.querySelector("#boton-jugar");
+const elementosTubos = new Map();
+const elementosObjetos = new Map();
 
-  juego.pajaro.velocidadY = -IMPULSO;
-  animarPajaro("pajaro--aleteo");
+const CLASES_ANIMACION_TORTUGA = [
+    "tortuga--nadando",
+    "tortuga--golpe",
+    "tortuga--choque",
+];
 
-  if (juego.estado === "listo") {
-    iniciarJuego();
-  }
+// ========== PARTIDA ==========
+
+function reiniciarPartida() {
+    clearTimeout(temporizadorFinal);
+
+    juego.estado = "listo";
+    juego.resultado = null;
+    juego.tiempo = 0;
+    juego.distancia = 0;
+    juego.puntaje = 0;
+    juego.vidas = VIDAS_INICIALES;
+    juego.tubosCreados = 0;
+    juego.invulnerableHasta = 0;
+    juego.tortuga.y = 260;
+    juego.tortuga.velocidadY = 0;
+    juego.tubos = [];
+    juego.objetos = [];
+
+    distanciaProximoTubo = 0;
+    tipoProximoObjeto = "moneda";
+    centroHuecoAnterior = ALTO_JUEGO / 2;
+    separacionAnterior = SEPARACION_INICIAL.maxima;
+
+    elementoSprite.classList.remove(...CLASES_ANIMACION_TORTUGA);
+    contenedorJuego.classList.remove("juego--terminado");
+    contenedorJuego.querySelectorAll(".aviso").forEach((aviso) => aviso.remove());
 }
 
-// Actualiza la velocidad y la posición vertical.
-function actualizarPajaro(dt) {
+function comenzarPartida() {
+    reiniciarPartida();
+    elementoPantalla.hidden = true;
+    botonJugar.blur();
+    iniciarJuego();
+    aplicarImpulso();
+}
 
+function iniciarJuego() {
+    juego.estado = "jugando";
+    cuadroAnterior = 0;
+
+    if (!animacionActiva) {
+        animacionActiva = true;
+        requestAnimationFrame(cicloJuego);
+    }
+}
+
+function terminarJuego(resultado) {
+    if (juego.estado === "terminado") return;
+
+    juego.estado = "terminado";
+    juego.resultado = resultado;
+    contenedorJuego.classList.add("juego--terminado");
+
+    if (resultado === "derrota") {
+        const caida = Math.max(0, ALTO_JUEGO - juego.tortuga.y - 36);
+
+        juego.tortuga.velocidadY = 0;
+        elementoSprite.style.setProperty("--caida", `${caida}px`);
+        animarTortuga("tortuga--choque");
+    }
+
+    temporizadorFinal = setTimeout(mostrarPantallaFinal, DEMORA_PANTALLA_FINAL);
+}
+
+function mostrarPantallaFinal() {
+    const gano = juego.resultado === "victoria";
+
+    elementoTitulo.textContent = gano ? "¡Ganaste!" : "Fin del juego";
+    elementoMensajeFinal.textContent =
+        `Puntaje: ${juego.puntaje} de ${PUNTAJE_OBJETIVO} · Vidas: ${juego.vidas}`;
+    botonJugar.textContent = "Jugar de nuevo";
+    elementoPantalla.hidden = false;
+}
+
+function aplicarImpulso() {
     if (juego.estado !== "jugando") return;
 
-    juego.pajaro.velocidadY += GRAVEDAD * dt;
-    juego.pajaro.y += juego.pajaro.velocidadY * dt;
+    juego.tortuga.velocidadY = -IMPULSO;
 
-    const pajaroSalePorArriba = juego.pajaro.y < 0;
-    const pajaroSalePorAbajo =
-        juego.pajaro.y + juego.pajaro.alto > ALTO_JUEGO;
-
-    if (pajaroSalePorArriba || pajaroSalePorAbajo) {
-        juego.estado = "terminado";
-    }
-
-    juego.tiempo += dt;
-
-    if (!tubo.puntuado && tuboYaPasoAlPajaro) {
-        tubo.puntuado = true;
-        juego.puntaje += 1;
-
-        if (juego.puntaje >= PUNTAJE_OBJETIVO) {
-            juego.estado = "terminado";
-            juego.resultado = "victoria";
-            return;
-        }
+    if (!elementoSprite.classList.contains("tortuga--golpe")) {
+        animarTortuga("tortuga--nadando");
     }
 }
 
-function crearTubo() {
-    const altoHueco = Math.max(
-        HUECO_MINIMO,
-        HUECO_INICIAL - juego.tiempo * 2
+function restarVidas(cantidad) {
+    if (juego.tiempo < juego.invulnerableHasta) return false;
+
+    juego.vidas = Math.max(0, juego.vidas - cantidad);
+    juego.invulnerableHasta = juego.tiempo + TIEMPO_INVULNERABLE;
+    mostrarAviso(`-${cantidad}`, "resta");
+
+    if (juego.vidas === 0) {
+        terminarJuego("derrota");
+    } else {
+        animarTortuga("tortuga--golpe");
+    }
+
+    return true;
+}
+
+// ========== ACTUALIZACIÓN ==========
+
+function actualizarTortuga(dt) {
+    if (juego.estado !== "jugando") return;
+
+    const tortuga = juego.tortuga;
+
+    juego.tiempo += dt;
+    juego.distancia += VELOCIDAD_MUNDO * dt;
+    tortuga.velocidadY += GRAVEDAD * dt;
+    tortuga.y += tortuga.velocidadY * dt;
+
+    if (tortuga.y < 0) {
+        tortuga.y = 0;
+        tortuga.velocidadY = 0;
+    }
+
+    if (tortuga.y + tortuga.alto > ALTO_JUEGO) {
+        tortuga.y = ALTO_JUEGO - tortuga.alto;
+        tortuga.velocidadY = -IMPULSO;
+        restarVidas(DANIO);
+    }
+}
+
+function obtenerProgreso() {
+    const tubosParaGanar = PUNTAJE_OBJETIVO / PUNTOS_POR_TUBO;
+
+    return Math.min(1, juego.tubosCreados / (tubosParaGanar - 1));
+}
+
+function interpolar(inicio, fin, progreso) {
+    return inicio + (fin - inicio) * progreso;
+}
+
+function calcularSeparacion() {
+    const progreso = obtenerProgreso();
+    const minima = interpolar(
+        SEPARACION_INICIAL.minima,
+        SEPARACION_FINAL.minima,
+        progreso
+    );
+    const maxima = interpolar(
+        SEPARACION_INICIAL.maxima,
+        SEPARACION_FINAL.maxima,
+        progreso
     );
 
-    const centroMinimo = MARGEN_VERTICAL + altoHueco / 2;
-    const centroMaximo = ALTO_JUEGO - MARGEN_VERTICAL - altoHueco / 2;
+    return minima + Math.random() * (maxima - minima);
+}
+
+function calcularVariacionMaxima() {
+    const tiempoLibre =
+        (separacionAnterior - ANCHO_TUBO - juego.tortuga.ancho) /
+        VELOCIDAD_MUNDO;
+
+    return Math.min(
+        VARIACION_MAXIMA_HUECO,
+        VELOCIDAD_VERTICAL_COMODA * tiempoLibre
+    );
+}
+
+function crearTubo(separacion) {
+    const altoHueco = interpolar(
+        HUECO_INICIAL,
+        HUECO_MINIMO,
+        obtenerProgreso()
+    );
+    const variacionMaxima = calcularVariacionMaxima();
+
+    const centroMinimo = Math.max(
+        MARGEN_VERTICAL + altoHueco / 2,
+        centroHuecoAnterior - variacionMaxima
+    );
+    const centroMaximo = Math.min(
+        ALTO_JUEGO - MARGEN_VERTICAL - altoHueco / 2,
+        centroHuecoAnterior + variacionMaxima
+    );
     const centroY =
         centroMinimo + Math.random() * (centroMaximo - centroMinimo);
 
@@ -101,40 +271,58 @@ function crearTubo() {
         centroY,
         altoHueco,
         puntuado: false,
+        golpeado: false,
     });
 
-    crearObjeto(
-    tipoProximoObjeto,
-    ANCHO_JUEGO + ANCHO_TUBO / 2 - TAMANO_OBJETO / 2,
-    centroY - TAMANO_OBJETO / 2
+    juego.tubosCreados += 1;
+    centroHuecoAnterior = centroY;
+    separacionAnterior = separacion;
+
+    const tamano = TAMANOS_OBJETO[tipoProximoObjeto];
+    const xObjeto =
+        ANCHO_JUEGO + ANCHO_TUBO + (separacion - ANCHO_TUBO - tamano) / 2;
+    const desvioY = (Math.random() - 0.5) * 170;
+    const yObjeto = Math.min(
+        ALTO_JUEGO - MARGEN_VERTICAL - tamano,
+        Math.max(MARGEN_VERTICAL, centroY + desvioY - tamano / 2)
     );
 
+    crearObjeto(tipoProximoObjeto, xObjeto, yObjeto);
+
     tipoProximoObjeto =
-    tipoProximoObjeto === "moneda" ? "murcielago" : "moneda";
+        tipoProximoObjeto === "moneda" ? "pulpo" : "moneda";
 }
 
 function crearObjeto(tipo, x, y) {
-  juego.objetos.push({
-    id: proximoIdObjeto++,
-    tipo,
-    x,
-    y,
-    ancho: TAMANO_OBJETO,
-    alto: TAMANO_OBJETO,
-    tomado: false,
-  });
+    const tamano = TAMANOS_OBJETO[tipo];
+
+    juego.objetos.push({
+        id: proximoIdObjeto++,
+        tipo,
+        x,
+        y,
+        yBase: y,
+        ancho: tamano,
+        alto: tamano,
+        tomado: false,
+    });
 }
 
-const velocidad = obtenerVelocidadMundo();
 function actualizarTubos(dt) {
+    if (juego.estado !== "jugando") return;
+
+    const avance = VELOCIDAD_MUNDO * dt;
+    distanciaProximoTubo -= avance;
 
     if (distanciaProximoTubo <= 0) {
-        crearTubo();
-        distanciaProximoTubo = 220 + Math.random() * 140;
+        const separacion = calcularSeparacion();
+
+        crearTubo(separacion);
+        distanciaProximoTubo += separacion;
     }
 
     for (const tubo of juego.tubos) {
-        tubo.x -= velocidad * dt;
+        tubo.x -= avance;
     }
 
     juego.tubos = juego.tubos.filter(
@@ -143,242 +331,53 @@ function actualizarTubos(dt) {
 }
 
 function actualizarObjetos(dt) {
+    if (juego.estado !== "jugando") return;
 
-  for (const objeto of juego.objetos) {
-    objeto.x -= velocidad * dt;
-  }
+    for (const objeto of juego.objetos) {
+        objeto.x -= VELOCIDAD_MUNDO * dt;
 
-  juego.objetos = juego.objetos.filter(
-    (objeto) => objeto.x + objeto.ancho > 0
-  );
-}
-
-function actualizarObjetosTomados() {
-  if (juego.estado !== "jugando") return;
-
-  const hitboxPajaro = obtenerHitboxPajaro();
-
-  for (const objeto of juego.objetos) {
-    if (!seSuperponen(hitboxPajaro, objeto)) continue;
-
-    objeto.tomado = true;
-
-    if (objeto.tipo === "moneda") {
-      juego.puntaje += 5;
-    }
-
-    if (objeto.tipo === "murcielago") {
-      juego.efectos.turboHasta = juego.tiempo + 3;
-    }
-  }
-
-  juego.objetos = juego.objetos.filter((objeto) => !objeto.tomado);
-}
-
-function obtenerVelocidadMundo() {
-  const turboActivo = juego.tiempo < juego.efectos.turboHasta;
-
-  return turboActivo
-    ? VELOCIDAD_TUBOS * 1.5
-    : VELOCIDAD_TUBOS;
-}
-
-function dibujarTubos() {
-  if (!contenedorJuego) return;
-
-  const idsActivos = new Set(juego.tubos.map((tubo) => tubo.id));
-
-  // Quita del DOM los tubos que ya salieron del área de juego.
-  for (const [id, elementos] of elementosTubos) {
-    if (!idsActivos.has(id)) {
-      elementos.superior.remove();
-      elementos.inferior.remove();
-      elementosTubos.delete(id);
-    }
-  }
-
-  for (const tubo of juego.tubos) {
-    let elementos = elementosTubos.get(tubo.id);
-
-    // Crea los elementos una sola vez por par de tubos.
-    if (!elementos) {
-      const superior = document.createElement("div");
-      superior.className = "tubo tubo--superior";
-
-      const inferior = document.createElement("div");
-      inferior.className = "tubo tubo--inferior";
-
-      contenedorJuego.append(superior, inferior);
-
-      elementos = { superior, inferior };
-      elementosTubos.set(tubo.id, elementos);
-    }
-
-    const altoSuperior = tubo.centroY - tubo.altoHueco / 2;
-    const yInferior = tubo.centroY + tubo.altoHueco / 2;
-    const altoInferior = ALTO_JUEGO - yInferior;
-
-    elementos.superior.style.width = `${tubo.ancho}px`;
-    elementos.superior.style.height = `${altoSuperior}px`;
-    elementos.superior.style.transform =
-      `translate3d(${tubo.x}px, 0, 0)`;
-
-    elementos.inferior.style.width = `${tubo.ancho}px`;
-    elementos.inferior.style.height = `${altoInferior}px`;
-    elementos.inferior.style.transform =
-      `translate3d(${tubo.x}px, ${yInferior}px, 0)`;
-  }
-}
-
-function dibujarObjetos() {
-  if (!contenedorJuego) return;
-
-  const idsActivos = new Set(juego.objetos.map((objeto) => objeto.id));
-
-  // Elimina los objetos que ya salieron de pantalla o fueron recogidos.
-  for (const [id, elemento] of elementosObjetos) {
-    if (!idsActivos.has(id)) {
-      elemento.remove();
-      elementosObjetos.delete(id);
-    }
-  }
-
-  for (const objeto of juego.objetos) {
-    let elemento = elementosObjetos.get(objeto.id);
-
-    if (!elemento) {
-      elemento = document.createElement("div");
-      elemento.className = `objeto objeto--${objeto.tipo}`;
-      contenedorJuego.append(elemento);
-      elementosObjetos.set(objeto.id, elemento);
-    }
-
-    elemento.style.width = `${objeto.ancho}px`;
-    elemento.style.height = `${objeto.alto}px`;
-    elemento.style.transform =
-      `translate3d(${objeto.x}px, ${objeto.y}px, 0)`;
-  }
-}
-
-let cuadroAnterior = 0;
-let animacionActiva = false;
-
-// Se ejecuta una vez por cuadro mientras la partida está activa.
-function cicloJuego(tiempoActual) {
-    if (juego.estado !== "jugando") {
-        animacionActiva = false;
-        return;
-    }
-
-    let dt = (tiempoActual - cuadroAnterior) / 1000;
-    cuadroAnterior = tiempoActual;
-
-    // Limita el salto temporal al volver a una pestaña pausada.
-    dt = Math.min(dt, 0.05);
-
-    actualizarPajaro(dt);
-    actualizarTubos(dt);
-    actualizarObjetos(dt);
-    verificarColisiones();
-    actualizarObjetosTomados();
-    actualizarPuntaje();
-    dibujarJuego();
-
-    requestAnimationFrame(cicloJuego);
-}
-
-function iniciarJuego() {
-    if (animacionActiva) return;
-
-    juego.estado = "jugando";
-    cuadroAnterior = 0;
-    animacionActiva = true;
-
-    if (juego.estado === "jugando") {
-        requestAnimationFrame(cicloJuego);
-    } else {
-        animacionActiva = false;
-        dibujarJuego();
-    }
-
-}
-
-function manejarTeclado(evento) {
-    if (evento.code !== "Space" || evento.repeat) return;
-
-    evento.preventDefault();
-    aplicarImpulso();
-}
-
-function configurarControles() {
-    const areaJuego = document.querySelector("#juego");
-
-    if (areaJuego) {
-        areaJuego.addEventListener("pointerdown", aplicarImpulso);
-    }
-
-    window.addEventListener("keydown", manejarTeclado);
-}
-
-const elementoPajaro = document.querySelector("#pajaro");
-const CLASES_ANIMACION_PAJARO = [
-  "pajaro--aleteo",
-  "pajaro--turbo",
-  "pajaro--choque",
-];
-
-function animarPajaro(clase) {
-  if (!elementoPajaro) return;
-
-  // Quita animaciones anteriores para poder disparar la nueva.
-  elementoPajaro.classList.remove(...CLASES_ANIMACION_PAJARO);
-  void elementoPajaro.offsetWidth;
-  elementoPajaro.classList.add(clase);
-}
-
-if (elementoPajaro) {
-  elementoPajaro.addEventListener("animationend", () => {
-    elementoPajaro.classList.remove(...CLASES_ANIMACION_PAJARO);
-  });
-}
-const elementoPuntaje = document.querySelector("#puntaje");
-const elementoMensajeFinal = document.querySelector("#mensaje-final");
-const contenedorJuego = document.querySelector("#juego");
-const elementosTubos = new Map();
-const elementosObjetos = new Map();
-
-function dibujarJuego() {
-    if (elementoPajaro) {
-        elementoPajaro.style.transform =
-            `translate3d(${juego.pajaro.x}px, ${juego.pajaro.y}px, 0)`;
-    }
-
-    if (elementoPuntaje) {
-        elementoPuntaje.textContent = `Puntaje: ${juego.puntaje}`;
-    }
-
-    if (elementoMensajeFinal) {
-        if (juego.estado === "terminado") {
-            elementoMensajeFinal.textContent =
-                juego.resultado === "victoria" ? "¡Ganaste!" : "Fin del juego";
-        } else {
-            elementoMensajeFinal.textContent = "";
+        if (objeto.tipo === "pulpo") {
+            const fase = (juego.tiempo / PERIODO_FLOTE_PULPO) * Math.PI * 2;
+            objeto.y = objeto.yBase + Math.sin(fase) * AMPLITUD_FLOTE_PULPO;
         }
     }
 
-    dibujarTubos();
-    dibujarObjetos();
+    juego.objetos = juego.objetos.filter(
+        (objeto) => objeto.x + objeto.ancho > 0
+    );
 }
 
-function obtenerHitboxPajaro() {
-    const margenX = juego.pajaro.ancho * 0.15;
-    const margenY = juego.pajaro.alto * 0.15;
+function actualizarObjetosTomados() {
+    if (juego.estado !== "jugando") return;
+
+    const hitboxTortuga = obtenerHitboxTortuga();
+
+    for (const objeto of juego.objetos) {
+        if (!seSuperponen(hitboxTortuga, objeto)) continue;
+
+        if (objeto.tipo === "moneda") {
+            objeto.tomado = true;
+            juego.vidas = Math.min(VIDAS_MAXIMAS, juego.vidas + CURACION_MONEDA);
+            mostrarAviso(`+${CURACION_MONEDA}`, "suma");
+        }
+
+        if (objeto.tipo === "pulpo" && juego.vidas > 1 && restarVidas(DANIO)) {
+            objeto.tomado = true;
+        }
+    }
+
+    juego.objetos = juego.objetos.filter((objeto) => !objeto.tomado);
+}
+
+function obtenerHitboxTortuga() {
+    const margenX = juego.tortuga.ancho * 0.15;
+    const margenY = juego.tortuga.alto * 0.15;
 
     return {
-        x: juego.pajaro.x + margenX,
-        y: juego.pajaro.y + margenY,
-        ancho: juego.pajaro.ancho - margenX * 2,
-        alto: juego.pajaro.alto - margenY * 2,
+        x: juego.tortuga.x + margenX,
+        y: juego.tortuga.y + margenY,
+        ancho: juego.tortuga.ancho - margenX * 2,
+        alto: juego.tortuga.alto - margenY * 2,
     };
 }
 
@@ -394,9 +393,11 @@ function seSuperponen(a, b) {
 function verificarColisiones() {
     if (juego.estado !== "jugando") return;
 
-    const pajaro = obtenerHitboxPajaro();
+    const tortuga = obtenerHitboxTortuga();
 
     for (const tubo of juego.tubos) {
+        if (tubo.golpeado) continue;
+
         const altoSuperior = tubo.centroY - tubo.altoHueco / 2;
         const yInferior = tubo.centroY + tubo.altoHueco / 2;
 
@@ -415,11 +416,11 @@ function verificarColisiones() {
         };
 
         if (
-            seSuperponen(pajaro, parteSuperior) ||
-            seSuperponen(pajaro, parteInferior)
+            seSuperponen(tortuga, parteSuperior) ||
+            seSuperponen(tortuga, parteInferior)
         ) {
-            juego.resultado = "derrota";
-            juego.estado = "terminado";
+            tubo.golpeado = true;
+            restarVidas(DANIO);
             return;
         }
     }
@@ -429,15 +430,212 @@ function actualizarPuntaje() {
     if (juego.estado !== "jugando") return;
 
     for (const tubo of juego.tubos) {
-        const tuboYaPasoAlPajaro =
-            tubo.x + tubo.ancho < juego.pajaro.x;
+        const tuboYaPasoLaTortuga =
+            tubo.x + tubo.ancho < juego.tortuga.x;
 
-        if (!tubo.puntuado && tuboYaPasoAlPajaro) {
+        if (!tubo.puntuado && tuboYaPasoLaTortuga) {
             tubo.puntuado = true;
-            juego.puntaje += 1;
+
+            if (tubo.golpeado) continue;
+
+            juego.puntaje += PUNTOS_POR_TUBO;
+
+            if (juego.puntaje >= PUNTAJE_OBJETIVO) {
+                terminarJuego("victoria");
+                return;
+            }
         }
     }
 }
+
+// ========== DIBUJO ==========
+
+function animarTortuga(clase) {
+    elementoSprite.classList.remove(...CLASES_ANIMACION_TORTUGA);
+    void elementoSprite.offsetWidth;
+    elementoSprite.classList.add(clase);
+}
+
+function mostrarAviso(texto, tipo) {
+    const aviso = document.createElement("span");
+    aviso.className = `aviso aviso--${tipo}`;
+    aviso.textContent = texto;
+    aviso.style.left = `${juego.tortuga.x + 18}px`;
+    aviso.style.top = `${Math.max(48, juego.tortuga.y - 26)}px`;
+    aviso.addEventListener("animationend", () => aviso.remove());
+    contenedorJuego.append(aviso);
+}
+
+function dibujarParallax() {
+    for (const capa of CAPAS_PARALLAX) {
+        const desplazamiento = (juego.distancia * capa.factor) % ANCHO_FONDO;
+        capa.elemento.style.transform =
+            `translate3d(${-desplazamiento}px, 0, 0)`;
+    }
+}
+
+function dibujarTubos() {
+    const idsActivos = new Set(juego.tubos.map((tubo) => tubo.id));
+
+    for (const [id, elementos] of elementosTubos) {
+        if (!idsActivos.has(id)) {
+            elementos.superior.remove();
+            elementos.inferior.remove();
+            elementosTubos.delete(id);
+        }
+    }
+
+    for (const tubo of juego.tubos) {
+        let elementos = elementosTubos.get(tubo.id);
+
+        if (!elementos) {
+            const superior = document.createElement("div");
+            superior.className = "tubo tubo--superior";
+
+            const inferior = document.createElement("div");
+            inferior.className = "tubo tubo--inferior";
+
+            contenedorJuego.append(superior, inferior);
+
+            elementos = { superior, inferior };
+            elementosTubos.set(tubo.id, elementos);
+        }
+
+        const altoSuperior = tubo.centroY - tubo.altoHueco / 2;
+        const yInferior = tubo.centroY + tubo.altoHueco / 2;
+        const altoInferior = ALTO_JUEGO - yInferior;
+
+        elementos.superior.style.width = `${tubo.ancho}px`;
+        elementos.superior.style.height = `${altoSuperior}px`;
+        elementos.superior.style.transform =
+            `translate3d(${tubo.x}px, 0, 0)`;
+
+        elementos.inferior.style.width = `${tubo.ancho}px`;
+        elementos.inferior.style.height = `${altoInferior}px`;
+        elementos.inferior.style.transform =
+            `translate3d(${tubo.x}px, ${yInferior}px, 0)`;
+
+        elementos.superior.classList.toggle("tubo--golpeado", tubo.golpeado);
+        elementos.inferior.classList.toggle("tubo--golpeado", tubo.golpeado);
+    }
+}
+
+function dibujarObjetos() {
+    const idsActivos = new Set(juego.objetos.map((objeto) => objeto.id));
+
+    for (const [id, elemento] of elementosObjetos) {
+        if (!idsActivos.has(id)) {
+            elemento.remove();
+            elementosObjetos.delete(id);
+        }
+    }
+
+    for (const objeto of juego.objetos) {
+        let elemento = elementosObjetos.get(objeto.id);
+
+        if (!elemento) {
+            elemento = document.createElement("div");
+            elemento.className = `objeto objeto--${objeto.tipo}`;
+
+            const sprite = document.createElement("div");
+            sprite.className = "objeto__sprite";
+            elemento.append(sprite);
+
+            contenedorJuego.append(elemento);
+            elementosObjetos.set(objeto.id, elemento);
+        }
+
+        elemento.style.width = `${objeto.ancho}px`;
+        elemento.style.height = `${objeto.alto}px`;
+        elemento.style.transform =
+            `translate3d(${objeto.x}px, ${objeto.y}px, 0)`;
+    }
+}
+
+function dibujarJuego() {
+    const inclinacion = Math.max(
+        -22,
+        Math.min(35, juego.tortuga.velocidadY * 0.06)
+    );
+
+    elementoTortuga.style.transform =
+        `translate3d(${juego.tortuga.x}px, ${juego.tortuga.y}px, 0) rotate(${inclinacion}deg)`;
+    elementoTortuga.classList.toggle(
+        "tortuga--invulnerable",
+        juego.estado === "jugando" && juego.tiempo < juego.invulnerableHasta
+    );
+
+    elementoVidas.textContent = `♥ Vidas: ${juego.vidas}`;
+    elementoPuntaje.textContent = `Puntaje: ${juego.puntaje} / ${PUNTAJE_OBJETIVO}`;
+
+    dibujarParallax();
+    dibujarTubos();
+    dibujarObjetos();
+}
+
+// ========== CICLO Y CONTROLES ==========
+
+let cuadroAnterior = 0;
+let animacionActiva = false;
+
+function cicloJuego(tiempoActual) {
+    if (juego.estado !== "jugando") {
+        animacionActiva = false;
+        return;
+    }
+
+    if (!cuadroAnterior) cuadroAnterior = tiempoActual;
+
+    const dt = Math.min((tiempoActual - cuadroAnterior) / 1000, 0.05);
+    cuadroAnterior = tiempoActual;
+
+    actualizarTortuga(dt);
+    actualizarTubos(dt);
+    actualizarObjetos(dt);
+    verificarColisiones();
+    actualizarObjetosTomados();
+    actualizarPuntaje();
+    dibujarJuego();
+
+    requestAnimationFrame(cicloJuego);
+}
+
+function manejarTeclado(evento) {
+    if (evento.code !== "Space") return;
+
+    evento.preventDefault();
+    if (evento.repeat) return;
+
+    if (juego.estado === "jugando") {
+        aplicarImpulso();
+    } else if (!elementoPantalla.hidden) {
+        comenzarPartida();
+    }
+}
+
+function configurarControles() {
+    contenedorJuego.addEventListener("pointerdown", aplicarImpulso);
+    botonJugar.addEventListener("click", comenzarPartida);
+    window.addEventListener("keydown", manejarTeclado);
+
+    elementoSprite.addEventListener("animationend", () => {
+        if (!elementoSprite.classList.contains("tortuga--choque")) {
+            elementoSprite.classList.remove(...CLASES_ANIMACION_TORTUGA);
+        }
+    });
+}
+
+function ajustarEscala() {
+    const escala = Math.min(
+        window.innerWidth / ANCHO_JUEGO,
+        window.innerHeight / ALTO_JUEGO
+    );
+
+    contenedorJuego.style.transform = `scale(${escala})`;
+}
+
+window.addEventListener("resize", ajustarEscala);
+ajustarEscala();
 
 dibujarJuego();
 
